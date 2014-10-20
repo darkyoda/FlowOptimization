@@ -1,0 +1,8 @@
+X,Y,NodeType,Name,Volume,ID
+325,203,Default,,0,1
+393,170,Default,,0,2
+650,172,Default,,0,3
+569,98,Default,,0,4
+Length,Name,StartNodeID,EndNodeID,ID
+0,,1,2,1
+0,,2,3,2

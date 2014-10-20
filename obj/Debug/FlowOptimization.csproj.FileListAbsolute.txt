@@ -1,0 +1,94 @@
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\FlowOptimization.exe.config
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\FlowOptimization.exe
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\FlowOptimization.pdb
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.dll
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.GLControl.dll
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.pdb
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.xml
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.GLControl.xml
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.csprojResolveAssemblyReference.cache
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.Form1.resources
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.Properties.Resources.resources
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.csproj.GenerateResource.Cache
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.exe
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.pdb
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\FlowOptimization.exe.config
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.exe
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.pdb
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\FlowOptimization.exe
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\FlowOptimization.pdb
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.dll
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.GLControl.dll
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.pdb
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.xml
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\OpenTK.GLControl.xml
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.csprojResolveAssemblyReference.cache
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.Form1.resources
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.Properties.Resources.resources
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.csproj.GenerateResource.Cache
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\ObjectListView.dll
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\ObjectListView.pdb
+C:\Development\FlowOptimization\FlowOptimization\bin\Debug\ObjectListView.xml
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\ObjectListView.dll
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\ObjectListView.pdb
+C:\Development\VS\FlowOptimization\FlowOptimization\bin\Debug\ObjectListView.xml
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.EditingWindow.resources
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.EditingWindow.resources
+C:\Development\VS\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.ProgInfoWindow.resources
+C:\Development\FlowOptimization\FlowOptimization\obj\Debug\FlowOptimization.ProgInfoWindow.resources
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\FlowOptimization.exe.config
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.exe
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.pdb
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\FlowOptimization.exe
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\ObjectListView.dll
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\ObjectListView.pdb
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\ObjectListView.xml
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.pdb
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.xml
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.GLControl.xml
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.csprojResolveAssemblyReference.cache
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.Form1.resources
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.Properties.Resources.resources
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.csproj.GenerateResource.Cache
+C:\Development\FlowOptimization(origin)\FlowOptimization\bin\Debug\FlowOptimization.pdb
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\FlowOptimization.exe.config
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.exe
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.pdb
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\FlowOptimization.exe
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\FlowOptimization.pdb
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\ObjectListView.dll
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.dll
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.GLControl.dll
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\ObjectListView.pdb
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\ObjectListView.xml
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.pdb
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.xml
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\bin\Debug\OpenTK.GLControl.xml
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.csprojResolveAssemblyReference.cache
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.Form1.resources
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.Properties.Resources.resources
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.csproj.GenerateResource.Cache
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.ICVForm.resources
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.EditingForm.resources
+C:\Development\VS\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.AboutForm.resources
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.EditingForm.resources
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.ICVForm.resources
+C:\Development\FlowOptimization(origin)\FlowOptimization\obj\Debug\FlowOptimization.AboutForm.resources
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\FlowOptimization.exe.config
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.exe
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.pdb
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.csprojResolveAssemblyReference.cache
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.EditingForm.resources
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.Form1.resources
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.ICVForm.resources
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.AboutForm.resources
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.Properties.Resources.resources
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\obj\Debug\FlowOptimization.csproj.GenerateResource.Cache
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\FlowOptimization.exe
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\FlowOptimization.pdb
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\ObjectListView.dll
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\ObjectListView.pdb
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\ObjectListView.xml
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\OpenTK.pdb
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\OpenTK.xml
+C:\Development\FlowOptimization(origin) — копия\FlowOptimization\bin\Debug\OpenTK.GLControl.xml
