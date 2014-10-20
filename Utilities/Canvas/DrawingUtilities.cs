@@ -3,27 +3,24 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using FlowOptimization.Data.Pipeline;
-using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace FlowOptimization.Utilities
+namespace FlowOptimization.Utilities.Canvas
 {
     /// <summary>
     /// Класс для графического отображения элементов на glControl
     /// </summary>
     static class DrawingUtilities
     {
-        private static int _rectSide = 30;  // Сторона квадрата
-
-        public static int RectSide
-        {
-            get { return _rectSide; }
-            set { _rectSide = value; }
-        }
+        public static int RectSide { get; set; }
 
         private static readonly SpriteFont Font = new SpriteFont(new Font("Consolas", 15)); // Шрифт
+
+        static DrawingUtilities()
+        {
+            RectSide = 30;
+        }
 
         /// <summary>
         /// Графическое отображение узла
@@ -40,9 +37,9 @@ namespace FlowOptimization.Utilities
 
             GL.Begin(BeginMode.Quads);
             GL.Vertex2(node.X, node.Y);
-            GL.Vertex2(node.X + _rectSide, node.Y);
-            GL.Vertex2(node.X + _rectSide, node.Y + _rectSide);
-            GL.Vertex2(node.X, node.Y + _rectSide);
+            GL.Vertex2(node.X + RectSide, node.Y);
+            GL.Vertex2(node.X + RectSide, node.Y + RectSide);
+            GL.Vertex2(node.X, node.Y + RectSide);
             GL.End();
 
             DrawString(Font, node.X, node.Y + RectSide - 3, 1f, node.ID.ToString(), Color.White);
@@ -60,12 +57,12 @@ namespace FlowOptimization.Utilities
             GL.Begin(BeginMode.Lines); // try PolygonMode
             GL.LineWidth(1f);
             GL.Vertex2(node.X - 1, node.Y - 1);
-            GL.Vertex2(node.X + 1 + _rectSide, node.Y - 1);
-            GL.Vertex2(node.X + 1 + _rectSide, node.Y + 1 + _rectSide);
-            GL.Vertex2(node.X - 1, node.Y + 1 + _rectSide);
-            GL.Vertex2(node.X + 1 + _rectSide, node.Y - 1);
-            GL.Vertex2(node.X + 1 + _rectSide, node.Y + 1 + _rectSide);
-            GL.Vertex2(node.X - 1, node.Y + 1 + _rectSide);
+            GL.Vertex2(node.X + 1 + RectSide, node.Y - 1);
+            GL.Vertex2(node.X + 1 + RectSide, node.Y + 1 + RectSide);
+            GL.Vertex2(node.X - 1, node.Y + 1 + RectSide);
+            GL.Vertex2(node.X + 1 + RectSide, node.Y - 1);
+            GL.Vertex2(node.X + 1 + RectSide, node.Y + 1 + RectSide);
+            GL.Vertex2(node.X - 1, node.Y + 1 + RectSide);
             GL.Vertex2(node.X - 1, node.Y - 1);
             GL.End();
         }
@@ -81,7 +78,7 @@ namespace FlowOptimization.Utilities
             GL.LineWidth(3f);
             GL.Color4(Color.Red);
             GL.Begin(BeginMode.Lines);
-            GL.Vertex2((node.X + _rectSide / 2), (node.Y + _rectSide / 2));   // Центр квадрата
+            GL.Vertex2((node.X + RectSide / 2), (node.Y + RectSide / 2));   // Центр квадрата
             GL.Vertex2(x, y);
             GL.End();
 
@@ -96,8 +93,8 @@ namespace FlowOptimization.Utilities
             GL.LineWidth(1.5f);
             GL.Color4(Color.Black);
             GL.Begin(BeginMode.Lines);
-            GL.Vertex2((pipe.StartNode.X + _rectSide / 2), (pipe.StartNode.Y + _rectSide / 2));   // Центр квадрата
-            GL.Vertex2((pipe.EndNode.X + _rectSide / 2), (pipe.EndNode.Y + _rectSide / 2));
+            GL.Vertex2((pipe.StartNode.X + RectSide / 2), (pipe.StartNode.Y + RectSide / 2));   // Центр квадрата
+            GL.Vertex2((pipe.EndNode.X + RectSide / 2), (pipe.EndNode.Y + RectSide / 2));
             GL.End();
 
             DrawString(Font, pipe.StartNode.X - ((pipe.StartNode.X - pipe.EndNode.X) / 2), pipe.StartNode.Y - ((pipe.StartNode.Y - pipe.EndNode.Y) / 2), 0.6f, pipe.Length.ToString(), Color.Black);

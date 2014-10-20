@@ -13,15 +13,15 @@ namespace FlowOptimization
             set { textBoxValue = value; }
         }
 
-        public EditingForm(Form1.Commands command)
+        public EditingForm(MainForm.Commands command)
         {
             InitializeComponent();
 
-            if (command == Form1.Commands.NodeName)
+            if (command == MainForm.Commands.NodeName)
             {
                 label1.Text = "Введите название узла";
             }
-            else if (command == Form1.Commands.NodeVolume)
+            else if (command == MainForm.Commands.NodeVolume)
             {
                 label1.Text = "Введите объем узла";
             }

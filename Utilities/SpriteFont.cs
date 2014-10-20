@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
+using FlowOptimization.Utilities.Canvas;
 
 #endregion
 

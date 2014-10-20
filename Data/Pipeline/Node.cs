@@ -22,10 +22,17 @@ namespace FlowOptimization.Data.Pipeline
         public string TypeForTable; // Типы узлов на русском для ObjectListView
         public List<Node> ConnectedNodes = new List<Node>();
 
+        /// <summary>
+        /// Координаты узла по X
+        /// </summary>
         public int X { get; set; }
-
+        /// <summary>
+        /// Координаты узла по Y
+        /// </summary>
         public int Y { get; set; }
-
+        /// <summary>
+        /// Тип узла
+        /// </summary>
         public Type NodeType
         {
             get
@@ -33,20 +40,37 @@ namespace FlowOptimization.Data.Pipeline
             set
             {
                 _nodeType = value;
-                // Задаем значения для отображения в ObjectListView
-                if (value == Type.Enter)
-                    TypeForTable = "Входной";
-                else if (value == Type.Exit)
-                    TypeForTable = "Выходной";
-                else if (value == Type.Default)
-                    TypeForTable = "-";
+                switch (value)
+                {
+                    case Type.Enter:
+                    {
+                        TypeForTable = "Входной";
+                        break;
+                    }
+                    case Type.Exit:
+                    {
+                        TypeForTable = "Выходной";
+                        break;
+                    }
+                    case Type.Default:
+                    {
+                        TypeForTable = "-";
+                        break;
+                    }
+                }                  
             }
         }
-
+        /// <summary>
+        /// Название узла
+        /// </summary>
         public string Name { get; set; }
-
+        /// <summary>
+        /// Объем узла
+        /// </summary>
         public int Volume { get; set; }
-
+        /// <summary>
+        /// ТТР узла
+        /// </summary>
         public int Ttr { get; set; }
 
         public Node()

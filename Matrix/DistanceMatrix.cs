@@ -58,7 +58,7 @@ namespace FlowOptimization.Matrix
             _dijkstra = new DijkstraAlgorithm(Nodes, intersectionMatrix);
 
             int counter = 0;
-            for (int i = 0; i < StartNodesIDs.Count-3; i++)
+            for (int i = 0; i < StartNodesIDs.Count; i++)
             {
                 // Без разницы какой конечный узел, так как алгоритм все равно считает кратчайшие пути от начальной точки
                 // В данном случае берем последний выходной узел

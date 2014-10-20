@@ -7,13 +7,16 @@ using System.Windows.Forms;
 using FlowOptimization.Data;
 using FlowOptimization.Data.Pipeline;
 using FlowOptimization.Matrix;
+using FlowOptimization.UI;
+using FlowOptimization.UI.DataGridView;
 using FlowOptimization.Utilities;
+using FlowOptimization.Utilities.Canvas;
 using FlowOptimization.Utilities.IO;
 using OpenTK.Graphics.OpenGL;
 using System.IO;
 namespace FlowOptimization
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private bool _loaded = false;   // Форма пока что не загружена
         private int _mouseX;    // Координаты мыши по X
@@ -43,22 +46,13 @@ namespace FlowOptimization
         private Node _endNode = new Node();
 
         private IntersectionMatrix _intersectionMatrix; // Матрица пересечений
-        private DistanceMatrix _distanceMatrix; // Матрица путей
-        private RoutesMatrix _routesMatrix;
-        private DistributionMatrix _distributionMatrix;
-        private TTRMatrix _ttrMatrix;
         private ICVsMatrix _icvsMatrix; // Матрица независимых поставщиков
 
-        private DataTable _uiIntersectionMatrix;
-        private DataTable _uiDistanceMatrix;
-        private DataTable _uiRoutesMatrix;
-        private DataTable _uiDistributionMatrix;
-        private DataTable _uiTTRMatrix;
-        private DataTable _uiICVsMatrix;
-
+        private DataTableView _dataTableView;
+        
         private string _filePath;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();            
         }
@@ -134,63 +128,25 @@ namespace FlowOptimization
             foreach (var node in _nodes)
                 DrawingUtilities.DrawRect(node);
 
-            // Обнуляем dataGridView и привязывем её к матрице пересечений
+            // Привязываем матрицу пересечений к dataGridView
             if (_nodes.Count != 0)
             {
                 _intersectionMatrix = new IntersectionMatrix(_nodes);
                 dataGridView1.DataSource = _intersectionMatrix.GetTable();
             }
 
+            // Подсветка ячеек DataGridView
+            DataTableUtilities.SetBackLight(dataGridView4, _nodes, Color.DodgerBlue);
+            DataTableUtilities.SetBackLight(dataGridView5, _nodes, Color.DodgerBlue);
+            DataTableUtilities.SetBackLight(dataGridView8, _nodes, Color.DodgerBlue);
+            DataTableUtilities.SetBackLight(dataGridView9, _nodes, Color.DodgerBlue);
 
-            // Если на пересечении строк и столбцов есть какая-либо запись (длина связи или 1), то подсвечиваем её
-            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
-            {
-                for (int j = 0; j < dataGridView1.RowCount - 1; j++)
-                {
-                    if (dataGridView1.Rows[i].Cells[j].Value.ToString() != "0")
-                        dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Gold;
-                }
-            }
-
-            // Подсветка остальных DataGridView
-            for (int i = 0; i < dataGridView2.RowCount - 1; i++)
-            {
-                for (int j = 0; j < dataGridView2.ColumnCount; j++)
-                {
-                    if (dataGridView2.Rows[i].Cells[j].Value.ToString() != "0")
-                        dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.Gold;
-                }
-            }
-
-            for (int i = 0; i < dataGridView4.RowCount - 1; i++)
-            {
-                for (int j = 0; j < dataGridView4.ColumnCount; j++)
-                {
-                    if (dataGridView4.Rows[i].Cells[j].Value.ToString() != "0")
-                        dataGridView4.Rows[i].Cells[j].Style.BackColor = Color.Gold;
-                    else if (_nodes[i].NodeType == Node.Type.Enter)
-                        dataGridView4.Rows[i].Cells[j].Style.BackColor = Color.DodgerBlue;
-                }
-            }
-
-            for (int i = 0; i < dataGridView5.RowCount - 1; i++)
-            {
-                for (int j = 0; j < dataGridView5.ColumnCount; j++)
-                {
-                    if (dataGridView5.Rows[i].Cells[j].Value.ToString() != "0")
-                    {
-                        dataGridView5.Rows[i].Cells[j].Style.BackColor = Color.Gold;
-                    }
-                }
-            }
-      
-            // Нумеруем заголовочный столбец
-            DataTableUtilities.SetRowNumber(dataGridView1);
-    
-            // Привязыаем список узлов и связей к objectListView
-            //objectListView1.SetObjects(_nodes);
-            objectListView2.SetObjects(_pipes);
-            objectListView1.SetObjects(_nodes);
+            DataTableUtilities.SetBackLight(dataGridView1, Color.Gold);
+            DataTableUtilities.SetBackLight(dataGridView2, Color.Gold);
+            DataTableUtilities.SetBackLight(dataGridView4, Color.Gold);
+            DataTableUtilities.SetBackLight(dataGridView5, Color.Gold);
+            DataTableUtilities.SetBackLight(dataGridView8, Color.Gold);
+            DataTableUtilities.SetBackLight(dataGridView9, Color.Gold);
 
             // Если выделен какой-либо узел
             if (_state == States.Selected)
@@ -198,28 +154,27 @@ namespace FlowOptimization
                 // Рисуем обводку
                 DrawingUtilities.DrawGrid(_operatedNode);
                 // В матрице пересечений подсвечиваем записи о узлах с которыми он соединен
-                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
-                {
-                    if (dataGridView1.Rows[_operatedNode.ID - 1].Cells[i].Value.ToString() != "0")
-                    {
-                        dataGridView1.Rows[_operatedNode.ID - 1].Cells[i].Style.BackColor = Color.Red;
-                        dataGridView1.Rows[i].Cells[_operatedNode.ID - 1].Style.BackColor = Color.Red;
-                    }                    
-                }
+                DataTableUtilities.SetBackLight(dataGridView1, _operatedNode, Color.Red);
             }
             else if (_state == States.LineCreation)
                 DrawingUtilities.DrawLineByMouse(_operatedNode, _mouseX, _mouseY);
-
-
+        
+            // Нумеруем заголовочные столбцы
+            DataTableUtilities.SetRowNumber(dataGridView1);
             DataTableUtilities.SetRowNumber(dataGridView2);
             DataTableUtilities.SetRowNumber(dataGridView3);
             DataTableUtilities.SetRowNumber(dataGridView4);
             DataTableUtilities.SetRowNumber(dataGridView5);
+            DataTableUtilities.SetRowNumber(dataGridView8);
+            DataTableUtilities.SetRowNumber(dataGridView9);
 
+            // Привязыаем список узлов и связей к objectListView
+            objectListView2.SetObjects(_pipes);
+            objectListView1.SetObjects(_nodes);
             // Обновляем значения 
             objectListView1.Refresh();
             objectListView2.Refresh();
-
+            
             GL.Flush();
             GL.Finish();
             glControl1.SwapBuffers();          
@@ -508,32 +463,17 @@ namespace FlowOptimization
             foreach (var node in _nodes)
                 node.Ttr = 0;
    
-            SolveGraph();
+            _dataTableView = new DataTableView(_intersectionMatrix, _nodes, _icvsMatrix);
 
-            dataGridView2.DataSource = _uiDistanceMatrix;
-            dataGridView3.DataSource = _uiRoutesMatrix;
-            dataGridView4.DataSource = _uiDistributionMatrix;
-            dataGridView5.DataSource = _uiTTRMatrix;
-            dataGridView8.DataSource = _distributionMatrix.GetTable(_routesMatrix, _icvsMatrix);
+            DataGridContent.BuildContent(dataGridView2, _dataTableView.DistanceMatrix);
+            //dataGridView2.DataSource = _dataTableView.DistanceMatrix;
+            dataGridView3.DataSource = _dataTableView.RoutesMatrix;
+            dataGridView4.DataSource = _dataTableView.DistributionMatrix;
+            dataGridView5.DataSource = _dataTableView.TtrMatrix;
+            dataGridView8.DataSource = _dataTableView.IcvDistributionMatrix;
+            dataGridView9.DataSource = _dataTableView.IcvTtrMatrix;
 
             comboBox1.Enabled = true;
-        }
-
-        /// <summary>
-        /// Рассчет заданного графа
-        /// </summary>
-        private void SolveGraph()
-        {
-            _distanceMatrix = new DistanceMatrix(_nodes);
-            _routesMatrix = new RoutesMatrix(_nodes);
-            _distributionMatrix = new DistributionMatrix(_nodes); 
-            _ttrMatrix = new TTRMatrix(_nodes);
-
-            _uiDistanceMatrix = _distanceMatrix.GetTable(_intersectionMatrix);
-            _uiRoutesMatrix = _routesMatrix.GetTable(_distanceMatrix);
-            _uiDistributionMatrix = _distributionMatrix.GetTable(_routesMatrix);
-            
-            _uiTTRMatrix = _ttrMatrix.GetTable(_distributionMatrix);
         }
 
         private void выходToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -598,19 +538,19 @@ namespace FlowOptimization
 
         private void матрицаРасстоянийСНПToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           /* foreach (var node in _nodes)
-                node.TTR = 0;
+            // Обнуляем общую ТТР для каждого узла
+            foreach (var node in _nodes)
+                node.Ttr = 0;
 
-            _distanceMatrix = new DistanceMatrix(_nodes);
-            var flow = new DistributionMatrix(_nodes);
-            dataGridView2.DataSource = _distanceMatrix.GetTable(_intersectionMatrix);
-            dataGridView3.DataSource = _distanceMatrix.GetRoutesLengthTable();
-            dataGridView4.DataSource = flow.GetICVFlowTable(_distanceMatrix, _icvsMatrix);
-            dataGridView5.DataSource = flow.GetTTRTable();
-            DataTableUtilities.SetRowNumber(dataGridView2);
-            DataTableUtilities.SetRowNumber(dataGridView3);
-            DataTableUtilities.SetRowNumber(dataGridView4);
-            DataTableUtilities.SetRowNumber(dataGridView5);*/
+            //SolveGraph();
+
+           /* dataGridView2.DataSource = _uiDistanceMatrix;
+            dataGridView3.DataSource = _uiRoutesMatrix;
+            dataGridView4.DataSource = _uiDistributionMatrix;
+            dataGridView5.DataSource = _uiTTRMatrix;
+            dataGridView8.DataSource = _distributionMatrix.GetTable(_routesMatrix, _icvsMatrix);*/
+
+            comboBox1.Enabled = true;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -628,17 +568,17 @@ namespace FlowOptimization
                     dataGridView7.DataSource = _icvsMatrix.GetTable();
                     break;
                 case 2:
-                    dataGridView7.DataSource = _uiDistanceMatrix;
+                    //dataGridView7.DataSource = _uiDistanceMatrix;
                     break;
                 case 3:
                     dataGridView7.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
-                    dataGridView7.DataSource = _uiRoutesMatrix;
+                   // dataGridView7.DataSource = _uiRoutesMatrix;
                     break;
                 case 4:
-                    dataGridView7.DataSource = _uiDistributionMatrix;
+                    //dataGridView7.DataSource = _uiDistributionMatrix;
                     break;
                 case 5:
-                    dataGridView7.DataSource = _uiTTRMatrix;
+                   // dataGridView7.DataSource = _uiTTRMatrix;
                     break;
             }
 

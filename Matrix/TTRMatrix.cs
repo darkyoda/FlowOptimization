@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using FlowOptimization.Data.Pipeline;
 
 namespace FlowOptimization.Matrix
@@ -16,6 +13,17 @@ namespace FlowOptimization.Matrix
         public DataTable GetTable(DistributionMatrix distributionMatrix)
         {
             if (distributionMatrix != null)
+            {
+                var table = GetTable(distributionMatrix.Ttr);
+
+                return table;
+            }
+            return null;
+        }
+
+        public DataTable GetTable(DistributionMatrix distributionMatrix, ICVsMatrix icvsMatrix)
+        {
+            if (icvsMatrix.Count != 0 && distributionMatrix != null)
             {
                 var table = GetTable(distributionMatrix.Ttr);
 

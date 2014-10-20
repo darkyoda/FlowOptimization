@@ -13,10 +13,12 @@ namespace FlowOptimization.Matrix
         private int _icvCounter;
         private int[][] _icvMatrix;
 
+        /// <summary>
+        /// Возвращает количество независимых поставщиков
+        /// </summary>
         public int Count
         {
-            get { return _icvs.Count; }
-            
+            get { return _icvs.Count; }        
         }
 
         public ICVsMatrix(List<ICV> icvs)
