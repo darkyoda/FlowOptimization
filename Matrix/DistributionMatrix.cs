@@ -14,7 +14,7 @@ namespace FlowOptimization.Matrix
         public int[][] Ttr;    // ТТР по итерациям
         public int[][] IcvTtr;
         private readonly int[][] _distributionMatrix;
-        private int[][] _icvDistributionMatrix;
+        private readonly int[][] _icvDistributionMatrix;
         private RoutesMatrix _routesMatrix;
 
         public DistributionMatrix(List<Node> nodes)
@@ -118,7 +118,7 @@ namespace FlowOptimization.Matrix
                 volumeMatrix[nodeNumber][icvNumber] += nodeVolume;
             }
 
-            //int[][] pathMatrix = distance.GetRoutesMatrix();
+           // int[][] pathMatrix = distance.GetRoutesMatrix();
 
             IcvTtr = InitializeMatrix(Nodes.Count, EndNodesIDs.Count*StartNodesIDs.Count);
 
@@ -182,7 +182,6 @@ namespace FlowOptimization.Matrix
             }
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -233,43 +232,6 @@ namespace FlowOptimization.Matrix
 " + e.StackTrace);
                 return null;
             }
-        }
-
-        /// <summary>
-        /// Определяем у каких узлов (Default и Volume = 0) между входной точкой и точкой, которую необходимо заполнить, требуется учесть проходящие через них потоки
-        /// </summary>
-        /// <param name="distance"></param>
-        /// <param name="startID">Номер входного узла</param>
-        /// <param name="endID">Номер узла, который должен быть заполнен</param>
-        /// <returns></returns>
-        private List<int> FillNodes(DistanceMatrix distance, int startID, int endID)
-        {
-            List<int> nodesToFill = new List<int>();
-            int[][] pathMatrix = distance.GetRoutesMatrix();
-
-
-            for (int i = 0; i < pathMatrix.Length; i++)
-            {
-                for (int j = 0; j < pathMatrix[i].Length; j++)
-                {
-                    if (pathMatrix[i][j] == endID)
-                    {
-                        for (int k = j + 1; k < pathMatrix[i].Length; k++)
-                        {
-                            if (pathMatrix[i][k] == startID)
-                            {
-                                for (int l = j + 1; l < k; l++)
-                                {
-                                    nodesToFill.Add(pathMatrix[i][l]);
-                                }
-                                return nodesToFill;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-            return null;
         }
     }
 }

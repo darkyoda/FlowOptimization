@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using FlowOptimization.Data.Pipeline;
 
 namespace FlowOptimization.Matrix
@@ -11,9 +9,10 @@ namespace FlowOptimization.Matrix
     {
         private readonly int[][] _routesMatrix;
         private DistanceMatrix _distanceMatrix;
+        private PathsMatrix _pathsMatrix;
         public RoutesMatrix(List<Node> nodes) : base(nodes)
         {
-            _routesMatrix = InitializeMatrix(EndNodesIDs.Count * StartNodesIDs.Count, 4);
+            _routesMatrix = InitializeMatrix(EndNodesIDs.Count * StartNodesIDs.Count, 5);
         }
 
         public override void InitializeTable(DataTable table, int[][] matrix)
@@ -22,6 +21,7 @@ namespace FlowOptimization.Matrix
             table.Columns.Add("Конечный узел", typeof(int));
             table.Columns.Add("Длина", typeof(int));
             table.Columns.Add("Посещен", typeof(int));
+            table.Columns.Add("Маршрут", typeof(string));
         }
 
         /// <summary>
@@ -37,20 +37,39 @@ namespace FlowOptimization.Matrix
         {
             _distanceMatrix = distanceMatrix;
             CalculateMatrix();
-
+          
             var table = GetTable(_routesMatrix);
             // Удаляем столбец "Посещен"
             table.Columns.RemoveAt(3);
+
+            _pathsMatrix = new PathsMatrix(Nodes, _distanceMatrix.IntersectionMatrix, GetMatrix());
+
+            for (int i = 0; i < GetMatrix().Length; i++)
+            {
+                string t = "";
+                for (int j = 0; j < _pathsMatrix.GetMatrix()[i].Length; j++)
+                {
+                    if (_pathsMatrix.GetMatrix()[i][j] != 0)
+                        t += _pathsMatrix.GetMatrix()[i][j].ToString() + "-";
+                }
+
+                table.Rows[i][3] = t.Remove(t.Length - 1);
+            }
+
             return table;
         }
 
+        /// <summary>
+        /// Получить матрицу маршрутов
+        /// </summary>
+        /// <returns></returns>
         public override int[][] GetMatrix()
         {
             return _routesMatrix;
         }
 
         /// <summary>
-        /// 
+        /// Рассчитать матрицу маршрутов
         /// </summary>
         private void CalculateMatrix()
         {
@@ -76,7 +95,7 @@ namespace FlowOptimization.Matrix
         }
 
         /// <summary>
-        /// 
+        /// Отсортировать матрицу маршрутов
         /// </summary>
         /// <param name="matrix"></param>
         private void SortMatrix(int[][] matrix)

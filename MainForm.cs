@@ -473,6 +473,8 @@ namespace FlowOptimization
             dataGridView8.DataSource = _dataTableView.IcvDistributionMatrix;
             dataGridView9.DataSource = _dataTableView.IcvTtrMatrix;
 
+           
+
             comboBox1.Enabled = true;
         }
 

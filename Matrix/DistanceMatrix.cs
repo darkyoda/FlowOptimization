@@ -4,7 +4,6 @@ using System.Data;
 using System.Windows.Forms;
 using FlowOptimization.Data.Pipeline;
 using FlowOptimization.Math;
-using Microsoft.SqlServer.Server;
 
 namespace FlowOptimization.Matrix
 {
@@ -14,10 +13,10 @@ namespace FlowOptimization.Matrix
     /// </summary>
     internal class DistanceMatrix : Matrix
     {
-        private int[][] _routesMatrix;
         private readonly int[][] _distanceMatrix;
-
         private DijkstraAlgorithm _dijkstra;
+
+        public IntersectionMatrix IntersectionMatrix;
 
         public DistanceMatrix(List<Node> nodes)
             : base (nodes)
@@ -32,6 +31,7 @@ namespace FlowOptimization.Matrix
         /// <returns></returns>
         public DataTable GetTable(IntersectionMatrix intersectionMatrix)
         {
+            IntersectionMatrix = intersectionMatrix;
             try
             {
                 CalculateMatrix(intersectionMatrix);
@@ -56,7 +56,6 @@ namespace FlowOptimization.Matrix
         public void CalculateMatrix(IntersectionMatrix intersectionMatrix)
         {
             _dijkstra = new DijkstraAlgorithm(Nodes, intersectionMatrix);
-
             int counter = 0;
             for (int i = 0; i < StartNodesIDs.Count; i++)
             {
@@ -90,63 +89,6 @@ namespace FlowOptimization.Matrix
         public override int[][] GetMatrix()
         {
             return _distanceMatrix;
-        }
-
-        /// <summary>
-        /// Строит матрицу, в каждой строке которого содержится кратчайший маршрут от конечной до начальной точки (не учитывая конечную точку)
-        /// </summary>
-        /// <returns></returns>
-        public int[][] GetRoutesMatrix()
-        {
-            _routesMatrix = InitializeMatrix(StartNodesIDs.Count*EndNodesIDs.Count, Nodes.Count);
-            
-            int counter = 0;
-            for (int i = 0; i < StartNodesIDs.Count; i++)
-            {
-                for (int j = 0; j < EndNodesIDs.Count; j++)
-                {
-                    int[] routeVector = _dijkstra.GetSolution(Nodes[StartNodesIDs[i] - 1], Nodes[EndNodesIDs[j] - 1]);
-                    
-                    for (int k = 0; k < Nodes.Count; k++)
-                    {
-                        if (routeVector[k] != 0)
-                            _routesMatrix[counter][k] = routeVector[k];
-                        else
-                            _routesMatrix[counter][k] = 0;
-                    }
-                    counter++;
-                }          
-            }
-
-            counter = 0;
-            int counter2 = 0;
-            int temp = 0;
-
-            int[][] tempMatrix = InitializeMatrix(StartNodesIDs.Count*EndNodesIDs.Count, Nodes.Count);
-            for (int i = 0; i < StartNodesIDs.Count; i++)
-            {
-                for (int j = 0; j < EndNodesIDs.Count; j++)
-                {                    
-                    temp = EndNodesIDs[j];
-                    while (temp != StartNodesIDs[i])
-                    {
-                        for (int k = 0; k < Nodes.Count; k++)
-                        {
-                            if (k == temp - 1)
-                            {
-                                tempMatrix[counter][counter2] = _routesMatrix[counter][k];
-                                temp = _routesMatrix[counter][k];
-                                counter2++;
-                            }
-                        } 
-                    }
-                    counter++;
-                    counter2 = 0;
-                }                
-            }
-
-            _routesMatrix = tempMatrix;
-            return _routesMatrix;
         }
     }
 }

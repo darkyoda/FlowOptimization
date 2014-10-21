@@ -19,7 +19,6 @@ namespace FlowOptimization.Math
         {
             _nodes = nodes;
             _intersectionMatrix = intersectionMatrix.GetMatrix();
-
         }
 
         /// <summary>
@@ -27,9 +26,9 @@ namespace FlowOptimization.Math
         /// </summary>
         /// <param name="startNodeID">Начальная вершина</param>
         /// <param name="endNodeID">Конечная вершина</param>
-        /// <param name="_shortPath">Кратчайшие пути</param>
-        /// <param name="_previousNode">Предыдущие вершины</param>
-        private void SolveGraph(int startNodeID, int endNodeID, out int[] _shortPath, out int[] _previousNode)
+        /// <param name="shortPath">Кратчайшие пути</param>
+        /// <param name="previousNode">Предыдущие вершины</param>
+        private void SolveGraph(int startNodeID, int endNodeID, out int[] shortPath, out int[] previousNode)
         {
             int nodeCount = _nodes.Count;
 
@@ -39,18 +38,18 @@ namespace FlowOptimization.Math
 
             int[] x = new int[nodeCount];   // Массив, содержащий единицы и нули для каждой вершины
 
-            _shortPath = new int[nodeCount];   
-            _previousNode = new int[nodeCount];   
+            shortPath = new int[nodeCount];   
+            previousNode = new int[nodeCount];   
 
             int nodeCounter;    // Счетчик вершин
             for (nodeCounter = 0; nodeCounter < nodeCount; nodeCounter++)
             {
-                _shortPath[nodeCounter] = Infinity;
+                shortPath[nodeCounter] = Infinity;
                 x[nodeCounter] = 0;
             }
           
-            _previousNode[start] = 0;
-            _shortPath[start] = 0;
+            previousNode[start] = 0;
+            shortPath[start] = 0;
             x[start] = 1;
 
             temp = start;
@@ -61,10 +60,10 @@ namespace FlowOptimization.Math
                 for (nodeCounter = 0; nodeCounter < nodeCount; nodeCounter++)
                 {
                     if (_intersectionMatrix[temp][nodeCounter] == 0) continue;    // Вершины не смежные
-                    if (x[nodeCounter] == 0 && _shortPath[nodeCounter] > _shortPath[temp] + _intersectionMatrix[temp][nodeCounter])
+                    if (x[nodeCounter] == 0 && shortPath[nodeCounter] > shortPath[temp] + _intersectionMatrix[temp][nodeCounter])
                     {
-                        _shortPath[nodeCounter] = _shortPath[temp] + _intersectionMatrix[temp][nodeCounter];
-                        _previousNode[nodeCounter] = temp;
+                        shortPath[nodeCounter] = shortPath[temp] + _intersectionMatrix[temp][nodeCounter];
+                        previousNode[nodeCounter] = temp;
                     }
                 }
 
@@ -73,10 +72,10 @@ namespace FlowOptimization.Math
 
                 for (nodeCounter = 0; nodeCounter < nodeCount; nodeCounter++)
                 {
-                    if (x[nodeCounter] == 0 && _shortPath[nodeCounter] < w)
+                    if (x[nodeCounter] == 0 && shortPath[nodeCounter] < w)
                     {
                         temp = nodeCounter;
-                        w = _shortPath[nodeCounter];
+                        w = shortPath[nodeCounter];
                     }
                 }
                 if (temp == -1)
@@ -88,7 +87,7 @@ namespace FlowOptimization.Math
                     nodeCounter = end;
                     while (nodeCounter != start)
                     {
-                        nodeCounter = _previousNode[nodeCounter];
+                        nodeCounter = previousNode[nodeCounter];
                     }
                     break;
                 }

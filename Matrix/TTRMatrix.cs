@@ -9,7 +9,11 @@ namespace FlowOptimization.Matrix
         public TTRMatrix(List<Node> nodes) : base(nodes)
         {
         }
-
+        /// <summary>
+        /// Получить DataTable ТТР 
+        /// </summary>
+        /// <param name="distributionMatrix"></param>
+        /// <returns></returns>
         public DataTable GetTable(DistributionMatrix distributionMatrix)
         {
             if (distributionMatrix != null)
@@ -20,7 +24,12 @@ namespace FlowOptimization.Matrix
             }
             return null;
         }
-
+        /// <summary>
+        /// Получить DataTable ТТР с учетом независимых поставщиков
+        /// </summary>
+        /// <param name="distributionMatrix"></param>
+        /// <param name="icvsMatrix"></param>
+        /// <returns></returns>
         public DataTable GetTable(DistributionMatrix distributionMatrix, ICVsMatrix icvsMatrix)
         {
             if (icvsMatrix.Count != 0 && distributionMatrix != null)
