@@ -16,9 +16,9 @@ namespace FlowOptimization.Data.Pipeline
         /// Enter - входной узел
         /// Exit - выходной узел
         /// </summary>
-        public enum Type { Default, Enter, Exit }; 
+        public enum NodesType { Default, Enter, Exit }; 
 
-        private Type _nodeType;
+        private NodesType _nodeType;
         public string TypeForTable; // Типы узлов на русском для ObjectListView
         public List<Node> ConnectedNodes = new List<Node>();
 
@@ -33,7 +33,7 @@ namespace FlowOptimization.Data.Pipeline
         /// <summary>
         /// Тип узла
         /// </summary>
-        public Type NodeType
+        public NodesType NodeType
         {
             get
             { return _nodeType; }
@@ -42,17 +42,17 @@ namespace FlowOptimization.Data.Pipeline
                 _nodeType = value;
                 switch (value)
                 {
-                    case Type.Enter:
+                    case NodesType.Enter:
                     {
                         TypeForTable = "Входной";
                         break;
                     }
-                    case Type.Exit:
+                    case NodesType.Exit:
                     {
                         TypeForTable = "Выходной";
                         break;
                     }
-                    case Type.Default:
+                    case NodesType.Default:
                     {
                         TypeForTable = "-";
                         break;
@@ -95,11 +95,21 @@ namespace FlowOptimization.Data.Pipeline
             }
         }
 
+        /// <summary>
+        /// Получить длину связи
+        /// </summary>
+        /// <param name="endNode">Конечный узел</param>
+        /// <returns></returns>
         public int GetPipeLength(Node endNode)
         {
             return (from pipe in ConnectedPipes where pipe.StartNode == this && pipe.EndNode == endNode select pipe.Length).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Получить длину связи
+        /// </summary>
+        /// <param name="endNodeId">ID конечного узла</param>
+        /// <returns></returns>
         public int GetPipeLength(int endNodeId)
         {
             return (from pipe in ConnectedPipes where pipe.StartNode.ID == this.ID && pipe.EndNode.ID == endNodeId select pipe.Length).FirstOrDefault();

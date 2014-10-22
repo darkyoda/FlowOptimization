@@ -4,27 +4,21 @@ namespace FlowOptimization.Data
     /// <summary>
     /// Узел, обрабатываемый тем или иным независимым поставщиком
     /// </summary>
-    class ICVNode
+    class IcvNode
     {
-        private int _id;
-        private int _volume;
+        /// <summary>
+        /// Номер узла
+        /// </summary>
+        public int ID { get; set; }
+        /// <summary>
+        /// Объем для распределения на узле
+        /// </summary>
+        public int Volume { get; set; }
 
-        public int ID
+        public IcvNode(int nodeId, int nodeVolume)
         {
-            get { return _id; }
-            set { _id = value; }
-        }
-
-        public int Volume
-        {
-            get { return _volume; }
-            set { _volume = value; }
-        }
-
-        public ICVNode(int nodeID, int nodeVolume)
-        {
-            _id = nodeID;
-            _volume = nodeVolume;
+            ID = nodeId;
+            Volume = nodeVolume;
         }
     }
 }

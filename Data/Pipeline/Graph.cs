@@ -6,15 +6,18 @@ namespace FlowOptimization.Data.Pipeline
     /// Общий класс для всех объектов (узлов, связей)
     /// Хранит List-ы этих объектов
     /// </summary>
-    class Objects
+    class Graph
     {
-        private List<Node> _nodes;  // Список узлов
-        private List<Pipe> _pipes;  // Список связей
+        private readonly List<Node> _nodes;  // Список узлов
+        private readonly List<Pipe> _pipes;  // Список связей
 
         private int _nodeCounter;   // Число всех узлов
         private int _pipeCounter;   // Число всех связей
 
-        public Objects()
+        public int NodesCount { get { return _nodes.Count; } }
+        public int PipesCount { get { return _pipes.Count; } }
+
+        public Graph()
         {
             _nodes = new List<Node>();
             _pipes = new List<Pipe>();
@@ -30,7 +33,7 @@ namespace FlowOptimization.Data.Pipeline
         /// <param name="y">Координата узла по Y</param>
         public void AddNode(int x, int y)
         {
-            Node node = new Node(x, y);
+            var node = new Node(x, y);
             _nodeCounter++;
             node.ID = _nodeCounter;
             _nodes.Add(node);
@@ -98,7 +101,7 @@ namespace FlowOptimization.Data.Pipeline
         /// <param name="endNode">Объект конечного узла</param>
         public void AddPipe(Node startNode, Node endNode)
         {
-            Pipe pipe = new Pipe(startNode, endNode);
+            var pipe = new Pipe(startNode, endNode);
             _pipeCounter++;
             pipe.ID = _pipeCounter;
             //startNode.AddConnectedPipe(pipe);

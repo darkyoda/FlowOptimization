@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using FlowOptimization.Data;
 using FlowOptimization.Data.Pipeline;
 using Microsoft.VisualBasic.FileIO;
@@ -25,7 +24,7 @@ namespace FlowOptimization.Utilities.IO
         /// <param name="objects">Объект в который будем передавать новые данные</param>
         /// <param name="icvs">Список независимых поставщиков</param>
         /// <returns></returns>
-        public void Import(ref Objects objects, ref List<ICV> icvs)
+        public void Import(ref Graph objects, ref List<ICV> icvs)
         {
             try
             {
@@ -40,7 +39,7 @@ namespace FlowOptimization.Utilities.IO
                     
                     int icvID = 1;
                     string icvName = "";
-                    var icvNodes = new List<ICVNode>();
+                    var icvNodes = new List<IcvNode>();
  
                     while (!csvReader.EndOfData)
                     {
@@ -61,12 +60,10 @@ namespace FlowOptimization.Utilities.IO
                         }
                         else if (nodeImport)
                         {
-                            Node node = new Node();
-                            node.X = Convert.ToInt32(fieldData[0]);
-                            node.Y = Convert.ToInt32(fieldData[1]);
-                            Node.Type type;
-                            Node.Type.TryParse(fieldData[2], out type);
-                            node.NodeType = type;
+                            var node = new Node {X = Convert.ToInt32(fieldData[0]), Y = Convert.ToInt32(fieldData[1])};
+                            Node.NodesType nodesType;
+                            Enum.TryParse(fieldData[2], out nodesType);
+                            node.NodeType = nodesType;
                             node.Name = fieldData[3];
                             node.Volume = Convert.ToInt32(fieldData[4]);
                             node.ID = Convert.ToInt32(fieldData[6]);
@@ -75,9 +72,9 @@ namespace FlowOptimization.Utilities.IO
                         }
                         else if (pipeImport)
                         {
-                            Node startNode = objects.GetNodeByID(Convert.ToInt32(fieldData[2]));
-                            Node endNode = objects.GetNodeByID(Convert.ToInt32(fieldData[3]));
-                            Pipe pipe = new Pipe(startNode, endNode);
+                            var startNode = objects.GetNodeByID(Convert.ToInt32(fieldData[2]));
+                            var endNode = objects.GetNodeByID(Convert.ToInt32(fieldData[3]));
+                            var pipe = new Pipe(startNode, endNode);
                             pipe.Length = Convert.ToInt32(fieldData[0]);
                             pipe.Name = fieldData[1];
                             pipe.ID = Convert.ToInt32(fieldData[4]);
@@ -91,13 +88,13 @@ namespace FlowOptimization.Utilities.IO
                             if (icvID != Convert.ToInt32(fieldData[0]))
                             {
                                 icvs.Add(new ICV(icvID, icvName, icvNodes));
-                                icvNodes = new List<ICVNode>();
+                                icvNodes = new List<IcvNode>();
                                 icvID = Convert.ToInt32(fieldData[0]);
                             }
 
                             int nodeID = Convert.ToInt32(fieldData[2]);
                             int nodeVolume = Convert.ToInt32(fieldData[3]);
-                            icvNodes.Add(new ICVNode(nodeID, nodeVolume));
+                            icvNodes.Add(new IcvNode(nodeID, nodeVolume));
                             icvName = fieldData[1];
                         }
                     }
@@ -106,7 +103,7 @@ namespace FlowOptimization.Utilities.IO
                         icvs.Add(new ICV(icvID, icvName, icvNodes));
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             //return objects;

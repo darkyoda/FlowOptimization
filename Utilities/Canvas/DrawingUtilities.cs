@@ -28,11 +28,11 @@ namespace FlowOptimization.Utilities.Canvas
         /// <param name="node">Объект узла</param>
         public static void DrawRect(Node node)
         {
-            if (node.NodeType == Node.Type.Enter)
+            if (node.NodeType == Node.NodesType.Enter)
                 GL.Color4(Color.Blue);
-            else if (node.NodeType == Node.Type.Exit || node.Volume != 0)
+            else if (node.NodeType == Node.NodesType.Exit || node.Volume != 0)
                 GL.Color4(Color.DarkOrange);
-            else if (node.NodeType == Node.Type.Default)
+            else if (node.NodeType == Node.NodesType.Default)
                 GL.Color4(Color.Green);
 
             GL.Begin(BeginMode.Quads);

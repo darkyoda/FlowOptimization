@@ -9,7 +9,7 @@ namespace FlowOptimization.Data
     {
         private int _id;    // Номер независимого поставщика
         private string _name;  // Название независимого поставщика
-        private List<ICVNode> _nodes; // Список узлов с которыми он работает
+        private List<IcvNode> _nodes; // Список узлов с которыми он работает
 
         public int ID
         {
@@ -23,20 +23,20 @@ namespace FlowOptimization.Data
             set { _name = value; }
         }
 
-        public ICV(string name, List<ICVNode> nodes)
+        public ICV(string name, List<IcvNode> nodes)
         {
             _name = name;
             _nodes = nodes;
         }
 
-        public ICV(int id, string name, List<ICVNode> nodes)
+        public ICV(int id, string name, List<IcvNode> nodes)
         {
             _id = id;
             _name = name;
             _nodes = nodes;
         }
 
-        public List<ICVNode> GetICVNodes()
+        public List<IcvNode> GetICVNodes()
         {
             return _nodes;
         }

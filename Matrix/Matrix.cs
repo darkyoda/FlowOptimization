@@ -7,7 +7,7 @@ namespace FlowOptimization.Matrix
     /// <summary>
     /// Базовый класс
     /// </summary>
-    class Matrix : IMatrix, IDataTable
+    class Matrix : IMatrix<int>, IDataTable<int>
     {
         protected List<Node> Nodes; // Список узлов
         protected List<Pipe> Pipes; // Список связей
@@ -32,9 +32,9 @@ namespace FlowOptimization.Matrix
             {
                 foreach (var node in Nodes)
                 {
-                    if (node.NodeType == Node.Type.Enter)
+                    if (node.NodeType == Node.NodesType.Enter)
                         StartNodesIDs.Add(node.ID);
-                    else if (node.NodeType == Node.Type.Exit)
+                    else if (node.NodeType == Node.NodesType.Exit)
                         EndNodesIDs.Add(node.ID);
                 }
             }

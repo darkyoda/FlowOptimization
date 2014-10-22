@@ -2,10 +2,10 @@
 
 namespace FlowOptimization.Matrix
 {
-    interface IMatrix
+    interface IMatrix<T>
     {
-        int[][] InitializeMatrix(int x, int y);
-        void AddRow(int[][] matrix, int rowNumber, int columnsCount);
-        int[][] GetMatrix();
+        T[][] InitializeMatrix(int x, int y);
+        void AddRow(T[][] matrix, int rowNumber, int columnsCount);
+        T[][] GetMatrix();
     }
 }

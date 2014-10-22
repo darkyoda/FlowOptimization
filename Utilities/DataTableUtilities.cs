@@ -68,7 +68,7 @@ namespace FlowOptimization.Utilities
             {
                 for (int j = 0; j < dgv.ColumnCount; j++)
                 {
-                    if (nodes[i].NodeType == Node.Type.Enter)
+                    if (nodes[i].NodeType == Node.NodesType.Enter)
                         dgv.Rows[i].Cells[j].Style.BackColor = color;
                 }
             }

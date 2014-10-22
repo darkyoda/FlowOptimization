@@ -2,10 +2,10 @@
 
 namespace FlowOptimization.Matrix
 {
-    interface IDataTable
+    interface IDataTable<in T>
     {
-        void InitializeTable(DataTable table, int[][] matrix);
-        void AddRow(DataTable table, int[][] matrix, int rowNumber);
-        DataTable GetTable(int[][] matrix);
+        void InitializeTable(DataTable table, T[][] matrix);
+        void AddRow(DataTable table, T[][] matrix, int rowNumber);
+        DataTable GetTable(T[][] matrix);
     }
 }

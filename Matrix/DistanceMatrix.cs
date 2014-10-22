@@ -65,7 +65,7 @@ namespace FlowOptimization.Matrix
 
                 for (int k = 0; k < Nodes.Count; k++)
                 {
-                    if ((Nodes[k].NodeType == Node.Type.Default && Nodes[k].Volume == 0) || Nodes[k].NodeType == Node.Type.Enter)
+                    if ((Nodes[k].NodeType == Node.NodesType.Default && Nodes[k].Volume == 0) || Nodes[k].NodeType == Node.NodesType.Enter)
                         _distanceMatrix[counter][k] = 0;
                     else
                         _distanceMatrix[counter][k] = row[k];

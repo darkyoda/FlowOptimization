@@ -8,20 +8,20 @@ namespace FlowOptimization
 {
     partial class ICVForm : Form
     {
-        private List<ICVNode> _icvNodes;    // Узлы обрабатываемые данным независимым поставщиком
-        private static Objects _objects;
+        private List<IcvNode> _icvNodes;    // Узлы обрабатываемые данным независимым поставщиком
+        private static Graph _objects;
         public ICV Icv;                     // Независимый поставщик
 
-        public ICVForm(Objects objects)
+        public ICVForm(Graph objects)
         {
             InitializeComponent();
-            _icvNodes = new List<ICVNode>();
+            _icvNodes = new List<IcvNode>();
             _objects = objects;
 
             foreach (var node in _objects.GetNodes())
             {
                 if (node.Volume != 0)
-                    _icvNodes.Add(new ICVNode(node.ID, 0));
+                    _icvNodes.Add(new IcvNode(node.ID, 0));
             }
 
             objectListView1.SetObjects(_icvNodes);           
@@ -37,7 +37,7 @@ namespace FlowOptimization
         }
 
         // Критерий для удаления узлов, объем которых равен нулю
-        private static bool IsNullVolume(ICVNode icvNode)
+        private static bool IsNullVolume(IcvNode icvNode)
         {
             if (icvNode.Volume == 0)
                 return true;

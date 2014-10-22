@@ -57,7 +57,7 @@
       <DependentUpon>EditingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\Pipeline\Element.cs" />
-    <Compile Include="Data\Pipeline\Objects.cs" />
+    <Compile Include="Data\Pipeline\Graph.cs" />
     <Compile Include="Data\Pipeline\Pipe.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

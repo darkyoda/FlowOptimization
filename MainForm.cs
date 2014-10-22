@@ -37,7 +37,7 @@ namespace FlowOptimization
 
         private List<Node> _nodes;  // Список узлов
         private List<Pipe> _pipes;  // Список связей
-        private Objects _objects;   // Объекты
+        private Graph _graph;   // Объекты
         private List<ICV> _icvs;    // Список независимых поставщиков 
         private TextureInfo _background;    // Файл подложки
         private string _backgroundPath; // Путь к файлу подложки
@@ -60,7 +60,7 @@ namespace FlowOptimization
         private void Form1_Load(object sender, EventArgs e)
         {
             // Инициализируем объекты
-            _objects = new Objects();
+            _graph = new Graph();
             _icvs = new List<ICV>();
             //_intersectionMatrix = new IntersectionMatrix(_nodes);
             label4.Text = "Н\nо\nм\ne\nр\n \nу\nз\nл\nа";
@@ -104,7 +104,7 @@ namespace FlowOptimization
                 return;
 
             // Если был создан хоть один узел, то можно производить расчеты
-            if (_objects.GetNodes().Count > 0)
+            if (_graph.NodesCount > 0)
                 матрицаРасстоянийToolStripMenuItem.Enabled = true;
 
             // Активируем элемент и очищаем буфер
@@ -118,8 +118,8 @@ namespace FlowOptimization
                 DrawingUtilities.DrawTexture(_background, 0, glControl1.Height, (float)glControl1.Height / _background.Height);
 
             // Получаем списки всех объектов
-            _nodes = _objects.GetNodes();
-            _pipes = _objects.GetPipes();
+            _nodes = _graph.GetNodes();
+            _pipes = _graph.GetPipes();
 
             // Рисуем связи
             foreach (var pipe in _pipes)
@@ -260,7 +260,7 @@ namespace FlowOptimization
                         _endNode = node;
                         // Проверяем существует ли уже такая связь и не являются ли начальный и конечный узлы одним и тем же узлом
                         if (!(_endNode.ConnectedNodes.Contains(_operatedNode)) && _operatedNode != _endNode)
-                            _objects.AddPipe(_operatedNode, _endNode);
+                            _graph.AddPipe(_operatedNode, _endNode);
                         glControl1.Invalidate();
                         _state = States.Idle;
                     }
@@ -273,7 +273,7 @@ namespace FlowOptimization
             }
             else if (_state == States.NodeCreation)
             {
-                _objects.AddNode(_mouseX, _mouseY);
+                _graph.AddNode(_mouseX, _mouseY);
                 _state = States.Idle;
                 glControl1_Paint(this, null);
             }
@@ -315,7 +315,7 @@ namespace FlowOptimization
                     ef.ShowDialog();
                     if (ef.TextBoxValue != null)
                     {
-                        node.NodeType = Node.Type.Enter;
+                        node.NodeType = Node.NodesType.Enter;
                         node.Volume = Convert.ToInt32(ef.TextBoxValue);
                     }
                     else
@@ -338,7 +338,7 @@ namespace FlowOptimization
                     ef.ShowDialog();
                     if (ef.TextBoxValue != null)
                     {
-                        node.NodeType = Node.Type.Exit;
+                        node.NodeType = Node.NodesType.Exit;
                         node.Volume = Convert.ToInt32(ef.TextBoxValue);
                     }                  
                     else
@@ -357,7 +357,7 @@ namespace FlowOptimization
                     && _mouseY <= (node.Y + DrawingUtilities.RectSide) && _mouseY >= node.Y)
                 {
                     _operatedNode = node;
-                    _objects.DeleteNode(_operatedNode);
+                    _graph.DeleteNode(_operatedNode);
                     glControl1.Invalidate();
                     break;
                 }
@@ -392,7 +392,7 @@ namespace FlowOptimization
                     if (ef.TextBoxValue != null)
                     {
                         node.Volume = Convert.ToInt32(ef.TextBoxValue);
-                        node.NodeType = Node.Type.Exit;
+                        node.NodeType = Node.NodesType.Exit;
                     }
                         
                     glControl1.Invalidate();
@@ -416,16 +416,16 @@ namespace FlowOptimization
 
             if (!String.IsNullOrEmpty(_filePath) && File.Exists(_filePath))
             {
-                _objects.ResetIDs();
+                _graph.ResetIDs();
                 // Очищаем все списки перед импортом новых данных
                 _nodes.Clear();
                 _pipes.Clear();
                 _icvs.Clear();
                 var import = new CSVImport(_filePath);
 
-                import.Import(ref _objects, ref _icvs);
-                _nodes = _objects.GetNodes();
-                _pipes = _objects.GetPipes();
+                import.Import(ref _graph, ref _icvs);
+                _nodes = _graph.GetNodes();
+                _pipes = _graph.GetPipes();
 
                 if (_icvs.Count != 0)
                 {
@@ -499,7 +499,7 @@ namespace FlowOptimization
 
         private void загрузитьПодлужкуБезРастяжкиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _objects.ResetIDs();
+            _graph.ResetIDs();
             _nodes.Clear();
             _pipes.Clear();
         }
@@ -522,7 +522,7 @@ namespace FlowOptimization
 
         private void независимыйПоставщикToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var icvForm = new ICVForm(_objects);
+            var icvForm = new ICVForm(_graph);
             icvForm.ShowDialog();
             if (icvForm.Icv != null)
             {
