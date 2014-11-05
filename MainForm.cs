@@ -63,7 +63,12 @@ namespace FlowOptimization
             _graph = new Graph();
             _icvs = new List<ICV>();
             //_intersectionMatrix = new IntersectionMatrix(_nodes);
-            label4.Text = "Н\nо\nм\ne\nр\n \nу\nз\nл\nа";
+            MainFormPresets.SetVerticalLabel(label4, "Номера узлов");
+            MainFormPresets.SetVerticalLabel(label6, "Номера узлов");
+            MainFormPresets.SetVerticalLabel(label8, "Номера узлов");
+            MainFormPresets.SetVerticalLabel(label12, "Номера узлов");
+            MainFormPresets.SetVerticalLabel(label13, "Номера узлов");
+            MainFormPresets.SetVerticalLabel(label14, "Номера узлов");
         }
 
         private void glControl1_Load(object sender, EventArgs e)

@@ -94,6 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\DataGridView\DataGridContent.cs" />
     <Compile Include="UI\DataGridView\DataTableView.cs" />
+    <Compile Include="UI\MainFormPresets.cs" />
     <Compile Include="Utilities\Canvas\Figure.cs" />
     <Compile Include="Utilities\IO\CSVExport.cs" />
     <Compile Include="Utilities\IO\CSVImport.cs" />
