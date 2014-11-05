@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FlowOptimization.Data.Pipeline;
 using FlowOptimization.Math;
 
@@ -7,8 +8,9 @@ namespace FlowOptimization.Matrix
     class PathsMatrix : Matrix
     {
         private readonly IntersectionMatrix _intersectionMatrix;
-        private int[][] _routesMatrix;
+        private readonly int[][] _routesMatrix;
         private readonly int[][] _encodedMatrix;
+        private int[][] _decodedMatrix;
 
         public PathsMatrix(List<Node> nodes, IntersectionMatrix intersectionMatrix, int[][] routesMatrix)
             : base(nodes)
@@ -22,6 +24,36 @@ namespace FlowOptimization.Matrix
         public override int[][] GetMatrix()
         {
             return GetDecodedMatrix();
+        }
+
+        /// <summary>
+        /// Вернуть строку из матрицы путей, содержащую необходимый путь
+        /// </summary>
+        /// <param name="start">Стартовый узел</param>
+        /// <param name="end">Конечный узел</param>
+        /// <returns></returns>
+        public int[] GetPath(int start, int end)
+        {
+            int pathIndex = -1;
+            for (int i = 0; i < _decodedMatrix.Length; i++)
+            {
+                int firstNode = _decodedMatrix[i][0];
+                if (firstNode == start)
+                {
+                    for (int j = _decodedMatrix[i].Length; j < 0; j--)
+                    {
+                        int endNode = _decodedMatrix[i][j];
+                        if (endNode == end)
+                            pathIndex = i;
+                    }
+                }
+            }
+            if (pathIndex != -1)
+            {
+                int[] path = _decodedMatrix[pathIndex];
+                return path;
+            }
+            return new int[] {};
         }
 
         /// <summary>
@@ -44,16 +76,16 @@ namespace FlowOptimization.Matrix
         /// <returns></returns>
         private int[][] GetDecodedMatrix()
         {
-            int[][] decoded = InitializeMatrix(_routesMatrix.Length, Nodes.Count);
+            _decodedMatrix = InitializeMatrix(_routesMatrix.Length, Nodes.Count);
 
             for (int i = 0; i < _routesMatrix.Length; i++)
             {
                 int startNode = _routesMatrix[i][0];
                 int endNode = _routesMatrix[i][1];
 
-                decoded[i] = BuildPath(startNode, endNode);
+                _decodedMatrix[i] = BuildPath(startNode, endNode);
             }
-            return decoded;
+            return _decodedMatrix;
         }
 
         /// <summary>

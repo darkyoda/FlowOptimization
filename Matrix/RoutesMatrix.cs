@@ -9,7 +9,7 @@ namespace FlowOptimization.Matrix
     {
         private readonly int[][] _routesMatrix;
         private DistanceMatrix _distanceMatrix;
-        private PathsMatrix _pathsMatrix;
+        public PathsMatrix PathsMatrix;
         public RoutesMatrix(List<Node> nodes) : base(nodes)
         {
             _routesMatrix = InitializeMatrix(EndNodesIDs.Count * StartNodesIDs.Count, 5);
@@ -42,15 +42,15 @@ namespace FlowOptimization.Matrix
             // Удаляем столбец "Посещен"
             table.Columns.RemoveAt(3);
 
-            _pathsMatrix = new PathsMatrix(Nodes, _distanceMatrix.IntersectionMatrix, GetMatrix());
+            PathsMatrix = new PathsMatrix(Nodes, _distanceMatrix.IntersectionMatrix, GetMatrix());
 
             for (int i = 0; i < GetMatrix().Length; i++)
             {
                 string t = "";
-                for (int j = 0; j < _pathsMatrix.GetMatrix()[i].Length; j++)
+                for (int j = 0; j < PathsMatrix.GetMatrix()[i].Length; j++)
                 {
-                    if (_pathsMatrix.GetMatrix()[i][j] != 0)
-                        t += _pathsMatrix.GetMatrix()[i][j].ToString() + "-";
+                    if (PathsMatrix.GetMatrix()[i][j] != 0)
+                        t += PathsMatrix.GetMatrix()[i][j].ToString() + "-";
                 }
 
                 table.Rows[i][3] = t.Remove(t.Length - 1);

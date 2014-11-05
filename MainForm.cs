@@ -466,13 +466,12 @@ namespace FlowOptimization
             _dataTableView = new DataTableView(_intersectionMatrix, _nodes, _icvsMatrix);
 
             DataGridContent.BuildContent(dataGridView2, _dataTableView.DistanceMatrix);
-            //dataGridView2.DataSource = _dataTableView.DistanceMatrix;
             dataGridView3.DataSource = _dataTableView.RoutesMatrix;
             dataGridView4.DataSource = _dataTableView.DistributionMatrix;
             dataGridView5.DataSource = _dataTableView.TtrMatrix;
             dataGridView8.DataSource = _dataTableView.IcvDistributionMatrix;
             dataGridView9.DataSource = _dataTableView.IcvTtrMatrix;
-
+           // dataGridView10.DataSource = _dataTableView.PassabilityMatrix;
            
 
             comboBox1.Enabled = true;
@@ -540,19 +539,7 @@ namespace FlowOptimization
 
         private void матрицаРасстоянийСНПToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Обнуляем общую ТТР для каждого узла
-            foreach (var node in _nodes)
-                node.Ttr = 0;
-
-            //SolveGraph();
-
-           /* dataGridView2.DataSource = _uiDistanceMatrix;
-            dataGridView3.DataSource = _uiRoutesMatrix;
-            dataGridView4.DataSource = _uiDistributionMatrix;
-            dataGridView5.DataSource = _uiTTRMatrix;
-            dataGridView8.DataSource = _distributionMatrix.GetTable(_routesMatrix, _icvsMatrix);*/
-
-            comboBox1.Enabled = true;
+            MessageBox.Show(@"Out of order!");
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -562,25 +549,43 @@ namespace FlowOptimization
 
             switch (selectedItem)
             {
+                // Матрица пересечений
                 case 0:
                     dataGridView7.DataSource = _intersectionMatrix.GetTable();
                     break;
+                // Список поставщиков
                 case 1:
-                    dataGridView7.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
                     dataGridView7.DataSource = _icvsMatrix.GetTable();
-                    break;
-                case 2:
-                    //dataGridView7.DataSource = _uiDistanceMatrix;
-                    break;
-                case 3:
                     dataGridView7.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
-                   // dataGridView7.DataSource = _uiRoutesMatrix;
                     break;
+                // Матрица расстояний
+                case 2:
+                    DataGridContent.BuildContent(dataGridView7, _dataTableView.DistanceMatrix);
+                    break;
+                // Матрица  маршрутов
+                case 3:
+                    dataGridView7.DataSource = _dataTableView.RoutesMatrix;
+                    dataGridView7.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;                    
+                    break;
+                // Матрица распределения
                 case 4:
-                    //dataGridView7.DataSource = _uiDistributionMatrix;
+                    dataGridView7.DataSource = _dataTableView.DistributionMatrix;
                     break;
+                // Матрица ТТР
                 case 5:
-                   // dataGridView7.DataSource = _uiTTRMatrix;
+                    dataGridView7.DataSource = _dataTableView.TtrMatrix;
+                    break;
+                // Матрица распределения с НП
+                case 6:
+                    dataGridView7.DataSource = _dataTableView.IcvDistributionMatrix;
+                    break;
+                // Матрица ТТР с НП
+                case 7:
+                    dataGridView7.DataSource = _dataTableView.IcvTtrMatrix;
+                    break;
+                // Матрица проходимости
+                case 8:
+                    dataGridView7.DataSource = null;
                     break;
             }
 

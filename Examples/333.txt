@@ -1,0 +1,8 @@
+X,Y,NodeType,Name,Volume,Ttr,ID
+490,137,Default,,0,0,1
+711,110,Default,,0,0,2
+676,214,Default,,0,0,3
+Length,Name,StartNodeID,EndNodeID,ID
+30,,1,3,1
+0,,3,2,2
+ID,Name,Node,Volume

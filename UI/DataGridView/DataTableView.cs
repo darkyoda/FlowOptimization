@@ -40,7 +40,7 @@ namespace FlowOptimization.UI.DataGridView
         /// Матрица ТТР с учетом независимых поставщиков
         /// </summary>
         public DataTable IcvTtrMatrix { get; private set; }
-        
+        public DataTable PassabilityMatrix { get; private set; }
         
         public DataTableView(IntersectionMatrix intersectionMatrix, List<Node> nodes, ICVsMatrix icvsMatrix)
         {
@@ -60,11 +60,13 @@ namespace FlowOptimization.UI.DataGridView
             var routesMatrix = new RoutesMatrix(_nodes);
             var distributionMatrix = new DistributionMatrix(_nodes);
             var ttrMatrix = new TTRMatrix(_nodes);
+            var passabilityMatrix = distributionMatrix.PassabilityMatrix;
             
             DistanceMatrix = distanceMatrix.GetTable(_intersectionMatrix);
             RoutesMatrix = routesMatrix.GetTable(distanceMatrix);
             DistributionMatrix = distributionMatrix.GetTable(routesMatrix);
             TtrMatrix = ttrMatrix.GetTable(distributionMatrix);
+            //PassabilityMatrix = passabilityMatrix.GetTable();
 
             // Если матрицы независимых поставщиков не существует
             if (_icvsMatrix == null) return;

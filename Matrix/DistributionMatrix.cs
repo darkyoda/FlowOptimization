@@ -12,16 +12,18 @@ namespace FlowOptimization.Matrix
     class DistributionMatrix : Matrix
     {
         public int[][] Ttr;    // ТТР по итерациям
-        public int[][] IcvTtr;
+        public int[][] IcvTtr;  // ТТР по итерация с учетом независимых поставщиков
         private readonly int[][] _distributionMatrix;
         private readonly int[][] _icvDistributionMatrix;
         private RoutesMatrix _routesMatrix;
+        public PassabilityMatrix PassabilityMatrix;
 
         public DistributionMatrix(List<Node> nodes)
             : base(nodes)
         {
             _distributionMatrix = InitializeMatrix(Nodes.Count, EndNodesIDs.Count * StartNodesIDs.Count);
             _icvDistributionMatrix = InitializeMatrix(Nodes.Count, EndNodesIDs.Count * StartNodesIDs.Count);
+            
         }
 
         /// <summary>
@@ -60,7 +62,9 @@ namespace FlowOptimization.Matrix
                         _distributionMatrix[endIndex][counter] += volumeVector[endIndex];
                         // Добавить промежуточные узлы для последующего заполнения
                         //routesList.Add(FillNodes(distance, beginIndex + 1, endIndex + 1));
-
+                        
+                       // PassabilityMatrix.AddValue(beginIndex, endIndex, volumeVector[endIndex]);
+                        // Изменяем значения объемов и ТТР
                         volumeVector[beginIndex] -= volumeVector[endIndex];
                         Ttr[endIndex][counter] = volumeVector[endIndex] * routeLength;
                         Nodes[routesMatrix[i][1] - 1].Ttr += volumeVector[endIndex] * routeLength;
@@ -80,7 +84,8 @@ namespace FlowOptimization.Matrix
                     {
                         if (_distributionMatrix[beginIndex][counter] - volumeVector[beginIndex] < 0)
                             _distributionMatrix[beginIndex][counter] = -1;
-                        //TempMatrix[beginIndex][counter] -= volumeVector[beginIndex];
+
+                        //PassabilityMatrix.AddValue(beginIndex, endIndex, volumeVector[beginIndex]);
                         
                         Ttr[endIndex][counter] = volumeVector[beginIndex] * routeLength;
                         Nodes[routesMatrix[i][1] - 1].Ttr += volumeVector[beginIndex] * routeLength;
@@ -118,11 +123,7 @@ namespace FlowOptimization.Matrix
                 volumeMatrix[nodeNumber][icvNumber] += nodeVolume;
             }
 
-           // int[][] pathMatrix = distance.GetRoutesMatrix();
-
             IcvTtr = InitializeMatrix(Nodes.Count, EndNodesIDs.Count*StartNodesIDs.Count);
-
-            List<List<int>> routesList = new List<List<int>>();
 
             for (int i = 0; i < routesMatrix.Length; i++)
             {
@@ -132,51 +133,58 @@ namespace FlowOptimization.Matrix
 
                 for (int icvColumn = 0; icvColumn < volumeMatrix[beginIndex].Length; icvColumn++)
                 {
-                    if (volumeMatrix[beginIndex][icvColumn] != 0)
+                    if (volumeMatrix[beginIndex][icvColumn] != 0 && volumeMatrix[endIndex][icvColumn] != 0)
                     {
-                        if (volumeMatrix[endIndex][icvColumn] != 0)
+                        // Если поток способен полностью заполнить узел
+                        if (volumeMatrix[beginIndex][icvColumn] - volumeMatrix[endIndex][icvColumn] >= 0 && routesMatrix[i][3] != 1)
                         {
-                            // Если поток способен полностью заполнить узел
-                            if (volumeMatrix[beginIndex][icvColumn] - volumeMatrix[endIndex][icvColumn] > 0 && routesMatrix[i][3] != 1)
+                            // Вычитаем из поток входного узла и добавляем в назначенный узел
+                            //_icvDistributionMatrix[beginIndex][counter] = volumeMatrix[beginIndex][icvColumn] - volumeMatrix[endIndex][icvColumn];
+                            _icvDistributionMatrix[beginIndex][counter] = icvColumn + 1;
+                            _icvDistributionMatrix[endIndex][counter] += volumeMatrix[endIndex][icvColumn];
+                            // Добавить промежуточные узлы для последующего заполнения
+                            //routesList.Add(FillNodes(distance, beginIndex + 1, endIndex + 1));
+
+                            volumeMatrix[beginIndex][icvColumn] -= volumeMatrix[endIndex][icvColumn];
+                            IcvTtr[endIndex][counter] = volumeMatrix[endIndex][icvColumn] * routeLength;
+                            //Nodes[routesMatrix[i][1] - 1].Ttr += volumeMatrix[endIndex][icvColumn] * routeLength;
+                            volumeMatrix[endIndex][icvColumn] -= volumeMatrix[endIndex][icvColumn];
+                            int temp = 0;
+                            // Если узел дозаполнен, то делаем пометку для следующих путей, что он заполнен\
+                            for (int t = 0; t < volumeMatrix[beginIndex].Length; t++)
                             {
-                                // Вычитаем из поток входного узла и добавляем в назначенный узел
-                                _icvDistributionMatrix[beginIndex][counter] = volumeMatrix[beginIndex][icvColumn] - volumeMatrix[endIndex][icvColumn];
-                                _icvDistributionMatrix[endIndex][counter] += volumeMatrix[endIndex][icvColumn];
-                                // Добавить промежуточные узлы для последующего заполнения
-                                //routesList.Add(FillNodes(distance, beginIndex + 1, endIndex + 1));
+                                temp += volumeMatrix[endIndex][t];
+                                
+                            }
 
-                                volumeMatrix[beginIndex][icvColumn] -= volumeMatrix[endIndex][icvColumn];
-                                IcvTtr[endIndex][counter] = volumeMatrix[endIndex][icvColumn] * routeLength;
-                                Nodes[routesMatrix[i][1] - 1].Ttr += volumeMatrix[endIndex][icvColumn] * routeLength;
-                                volumeMatrix[endIndex][icvColumn] -= volumeMatrix[endIndex][icvColumn];
-
-                                // Если узел дозаполнен, то делаем пометку для следующих путей, что он заполнен
+                            if (temp == 0)
+                            {
                                 for (int j = 0; j < routesMatrix.Length; j++)
                                 {
                                     if (routesMatrix[j][1] == routesMatrix[i][1])
                                         routesMatrix[j][3] = 1;
                                 }
-
-                                counter++;
                             }
-                            // Если поток не способен полностью заполнить узел
-                            else if (volumeMatrix[beginIndex][icvColumn] - volumeMatrix[endIndex][icvColumn] < 0 && routesMatrix[i][3] != 1)
-                            {
-                                _icvDistributionMatrix[beginIndex][counter] -= volumeMatrix[beginIndex][icvColumn];
 
-                                IcvTtr[endIndex][counter] = volumeMatrix[beginIndex][icvColumn] * routeLength;
-                                Nodes[routesMatrix[i][1] - 1].Ttr += volumeMatrix[beginIndex][icvColumn] * routeLength;
-
-                                //routesList.Add(FillNodes(distance, beginIndex, endIndex));
-                                volumeMatrix[endIndex][icvColumn] -= volumeMatrix[beginIndex][icvColumn];
-                                _icvDistributionMatrix[endIndex][counter] += volumeMatrix[beginIndex][icvColumn];
-
-                                volumeMatrix[beginIndex][icvColumn] = 0;
-
-                                counter++;
-                            }
-                            break;
+                            counter++;
                         }
+                        // Если поток не способен полностью заполнить узел
+                        else if (volumeMatrix[beginIndex][icvColumn] - volumeMatrix[endIndex][icvColumn] < 0 && routesMatrix[i][3] != 1)
+                        {
+                            //_icvDistributionMatrix[beginIndex][counter] -= volumeMatrix[beginIndex][icvColumn];
+                            _icvDistributionMatrix[beginIndex][counter] = icvColumn + 1;
+                            _icvDistributionMatrix[endIndex][counter] += volumeMatrix[beginIndex][icvColumn];
+                            IcvTtr[endIndex][counter] = volumeMatrix[beginIndex][icvColumn] * routeLength;
+                            //Nodes[routesMatrix[i][1] - 1].Ttr += volumeMatrix[beginIndex][icvColumn] * routeLength;
+
+                            //routesList.Add(FillNodes(distance, beginIndex, endIndex));
+                            volumeMatrix[endIndex][icvColumn] -= volumeMatrix[beginIndex][icvColumn];
+                            
+                            volumeMatrix[beginIndex][icvColumn] = 0;
+
+                            counter++;
+                        }
+                            //break;
                     }
                 }
             }
@@ -190,6 +198,7 @@ namespace FlowOptimization.Matrix
         public DataTable GetTable(RoutesMatrix routesMatrix)
         {
             _routesMatrix = routesMatrix;
+            PassabilityMatrix = new PassabilityMatrix(_routesMatrix.PathsMatrix);
             if (_routesMatrix == null) return null;
             try
             {
