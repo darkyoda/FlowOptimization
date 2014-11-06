@@ -476,7 +476,7 @@ namespace FlowOptimization
             dataGridView5.DataSource = _dataTableView.TtrMatrix;
             dataGridView8.DataSource = _dataTableView.IcvDistributionMatrix;
             dataGridView9.DataSource = _dataTableView.IcvTtrMatrix;
-           // dataGridView10.DataSource = _dataTableView.PassabilityMatrix;
+            dataGridView10.DataSource = _dataTableView.PassabilityMatrix;
            
 
             comboBox1.Enabled = true;

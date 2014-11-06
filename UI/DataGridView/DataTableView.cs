@@ -60,13 +60,14 @@ namespace FlowOptimization.UI.DataGridView
             var routesMatrix = new RoutesMatrix(_nodes);
             var distributionMatrix = new DistributionMatrix(_nodes);
             var ttrMatrix = new TTRMatrix(_nodes);
-            var passabilityMatrix = distributionMatrix.PassabilityMatrix;
+            
             
             DistanceMatrix = distanceMatrix.GetTable(_intersectionMatrix);
             RoutesMatrix = routesMatrix.GetTable(distanceMatrix);
             DistributionMatrix = distributionMatrix.GetTable(routesMatrix);
             TtrMatrix = ttrMatrix.GetTable(distributionMatrix);
-            //PassabilityMatrix = passabilityMatrix.GetTable();
+            var passabilityMatrix = distributionMatrix.PassabilityMatrix;
+            PassabilityMatrix = passabilityMatrix.GetTable();
 
             // Если матрицы независимых поставщиков не существует
             if (_icvsMatrix == null) return;

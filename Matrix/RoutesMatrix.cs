@@ -9,7 +9,7 @@ namespace FlowOptimization.Matrix
     {
         private readonly int[][] _routesMatrix;
         private DistanceMatrix _distanceMatrix;
-        public PathsMatrix PathsMatrix;
+        private PathsMatrix _pathsMatrix;
         public RoutesMatrix(List<Node> nodes) : base(nodes)
         {
             _routesMatrix = InitializeMatrix(EndNodesIDs.Count * StartNodesIDs.Count, 5);
@@ -22,6 +22,11 @@ namespace FlowOptimization.Matrix
             table.Columns.Add("Длина", typeof(int));
             table.Columns.Add("Посещен", typeof(int));
             table.Columns.Add("Маршрут", typeof(string));
+        }
+
+        public PathsMatrix GetPathsMatrix()
+        {
+            return _pathsMatrix;
         }
 
         /// <summary>
@@ -42,15 +47,15 @@ namespace FlowOptimization.Matrix
             // Удаляем столбец "Посещен"
             table.Columns.RemoveAt(3);
 
-            PathsMatrix = new PathsMatrix(Nodes, _distanceMatrix.IntersectionMatrix, GetMatrix());
+            _pathsMatrix = new PathsMatrix(Nodes, _distanceMatrix.IntersectionMatrix, GetMatrix());
 
             for (int i = 0; i < GetMatrix().Length; i++)
             {
                 string t = "";
-                for (int j = 0; j < PathsMatrix.GetMatrix()[i].Length; j++)
+                for (int j = 0; j < _pathsMatrix.GetMatrix()[i].Length; j++)
                 {
-                    if (PathsMatrix.GetMatrix()[i][j] != 0)
-                        t += PathsMatrix.GetMatrix()[i][j].ToString() + "-";
+                    if (_pathsMatrix.GetMatrix()[i][j] != 0)
+                        t += _pathsMatrix.GetMatrix()[i][j].ToString() + "-";
                 }
 
                 table.Rows[i][3] = t.Remove(t.Length - 1);

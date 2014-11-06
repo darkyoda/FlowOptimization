@@ -14,7 +14,6 @@ namespace FlowOptimization.Matrix
         public PassabilityMatrix(PathsMatrix pathsMatrix)
         {
             _pathsMatrix = pathsMatrix;
-            
             _passabilityMatrix = InitializeMatrix(_pathsMatrix.GetMatrix()[0].Length, 1);
         }
 

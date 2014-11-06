@@ -5,6 +5,9 @@ using FlowOptimization.Math;
 
 namespace FlowOptimization.Matrix
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class PathsMatrix : Matrix
     {
         private readonly IntersectionMatrix _intersectionMatrix;
@@ -40,11 +43,15 @@ namespace FlowOptimization.Matrix
                 int firstNode = _decodedMatrix[i][0];
                 if (firstNode == start)
                 {
-                    for (int j = _decodedMatrix[i].Length; j < 0; j--)
+                    for (int j = _decodedMatrix[i].Length - 1; j > 0; j--)
                     {
                         int endNode = _decodedMatrix[i][j];
                         if (endNode == end)
                             pathIndex = i;
+                        else if (endNode == 0)
+                            continue;
+                        else if (endNode != 0)
+                            break;
                     }
                 }
             }
