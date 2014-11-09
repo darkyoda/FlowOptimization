@@ -86,13 +86,27 @@ namespace FlowOptimization.Data.Pipeline
         /// <summary>
         /// Добавляем объект pipe (связь) в коллекцию pipes
         /// </summary>
-        /// <param name="pipe">Объект класса pipe (связь)</param>
-        public void AddConnectedPipe(Pipe pipe)
+        /// <param name="pipe">Связь для добавления</param>
+        public void AddPipe(Pipe pipe)
+        {
+            if (pipe != null)
+                ConnectedPipes.Add(pipe);
+        }
+
+        /// <summary>
+        /// Удалить объект pipe (связь) из коллекции pipes
+        /// </summary>
+        /// <param name="pipe">Связь для удаления</param>
+        public void RemovePipe(Pipe pipe)
         {
             if (pipe != null)
             {
-                ConnectedPipes.Add(pipe);
-            }
+                ConnectedPipes.Remove(pipe);
+                Node startNode = pipe.StartNode;
+                Node endNode = pipe.EndNode;
+                startNode.ConnectedNodes.Remove(endNode);
+                endNode.ConnectedNodes.Remove(startNode);
+            }               
         }
 
         /// <summary>

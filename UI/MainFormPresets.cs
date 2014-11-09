@@ -1,9 +1,16 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace FlowOptimization.UI
 {
     static class MainFormPresets
     {
+        /// <summary>
+        /// Настройка горизонтальных label
+        /// </summary>
+        /// <param name="label">label для настройки</param>
+        /// <param name="text">Текст label</param>
         public static void SetHorizontalLabel(System.Windows.Forms.Label label, string text)
         {
             //const int x = 15;
@@ -13,6 +20,11 @@ namespace FlowOptimization.UI
             label.Text = text;
         }
 
+        /// <summary>
+        /// Настройка вертикального label
+        /// </summary>
+        /// <param name="label">label для настройки</param>
+        /// <param name="text">Текст label</param>
         public static void SetVerticalLabel(System.Windows.Forms.Label label, string text)
         {
             //const int x = 3;
@@ -24,6 +36,25 @@ namespace FlowOptimization.UI
 
             label.Text = temp;
             label.Anchor = AnchorStyles.Left;
+        }
+
+        /// <summary>
+        /// Настройка datagridview
+        /// </summary>
+        /// <param name="dataGridView">datagridview для настройки</param>
+        private static void SetDataGridView(System.Windows.Forms.DataGridView dataGridView)
+        {
+            var cellStyle = new DataGridViewCellStyle
+            {
+                Font = new Font(new FontFamily("Microsoft Sans Serif"), (float) 5.25)
+            };
+            dataGridView.DefaultCellStyle = cellStyle;
+        }
+
+        public static void SetDataGridViews(List<System.Windows.Forms.DataGridView> dataGridViews)
+        {
+            foreach (var dataGridView in dataGridViews)
+                SetDataGridView(dataGridView);
         }
     }
 }

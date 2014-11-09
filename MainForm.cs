@@ -4,6 +4,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
 using FlowOptimization.Data;
 using FlowOptimization.Data.Pipeline;
 using FlowOptimization.Matrix;
@@ -27,10 +28,10 @@ namespace FlowOptimization
         /// Idle
         /// Selected - выбран какой-либо узел
         /// Draggable - процесс перетаскивания узла
-        /// LineCreation - процесс создания линии
+        /// PipeCreation - процесс создания линии
         /// NodeCreation - создание узла
         /// </summary>
-        private enum States { Idle, Selected, Draggable, LineCreation, NodeCreation, ShowDialog };
+        private enum States { Idle, Selected, Draggable, PipeCreation, NodeCreation, ShowDialog };
 
         public enum Commands { NodeName, NodeVolume };  // Команды для диалоговых окон
         private States _state;
@@ -62,14 +63,40 @@ namespace FlowOptimization
             // Инициализируем объекты
             _graph = new Graph();
             _icvs = new List<ICV>();
-            //_intersectionMatrix = new IntersectionMatrix(_nodes);
+
+            // Задаем вертикальные label`ы
             MainFormPresets.SetVerticalLabel(label4, "Номера узлов");
             MainFormPresets.SetVerticalLabel(label6, "Номера узлов");
             MainFormPresets.SetVerticalLabel(label8, "Номера узлов");
             MainFormPresets.SetVerticalLabel(label12, "Номера узлов");
             MainFormPresets.SetVerticalLabel(label13, "Номера узлов");
             MainFormPresets.SetVerticalLabel(label14, "Номера узлов");
+            // Настройка datagridview
+            //this.Controls.
+            MainFormPresets.SetDataGridViews(GetDataGridViews());
+           /* MainFormPresets.SetDataGridView(dataGridView1);
+            MainFormPresets.SetDataGridView(dataGridView2);
+            MainFormPresets.SetDataGridView(dataGridView3);
+            MainFormPresets.SetDataGridView(dataGridView4);
+            MainFormPresets.SetDataGridView(dataGridView5);
+            MainFormPresets.SetDataGridView(dataGridView6);
+            MainFormPresets.SetDataGridView(dataGridView7);
+            MainFormPresets.SetDataGridView(dataGridView8);
+            MainFormPresets.SetDataGridView(dataGridView9);
+            MainFormPresets.SetDataGridView(dataGridView10);*/
         }
+
+        private List<DataGridView> GetDataGridViews()
+        {
+            var dgwList = new List<DataGridView>();
+            foreach (Control control in Controls)
+            {
+                if (control is DataGridView)
+                    dgwList.Add((DataGridView)control);               
+            }
+            return dgwList;
+        }
+
 
         private void glControl1_Load(object sender, EventArgs e)
         {
@@ -89,7 +116,44 @@ namespace FlowOptimization
             SetupViewport();
             
             _state = States.Idle;
-            _backgroundPath = null;      
+            _backgroundPath = null;
+
+            // Удаление связей через objectlistview
+            objectListView2.CellEditActivation = ObjectListView.CellEditActivateMode.SingleClick;
+            objectListView2.CellEditStarting += ObjectListView2OnCellEditStarting;
+
+            deleteColumn.IsEditable = true;
+            deleteColumn.AspectGetter = delegate
+            {
+                return "Удалить";
+            };
+            /*deleteColumn.AspectToStringConverter = delegate
+            {
+                return String.Empty;
+            };
+            deleteColumn.ImageGetter = delegate
+            {
+                return SystemIcons.Application;
+            };*/
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ObjectListView2OnCellEditStarting(object sender, CellEditEventArgs e)
+        {
+            if (e.Column == deleteColumn)
+            {
+                e.Cancel = true;        // Не включать редактирование после нажатия
+                objectListView2.RemoveObject(e.RowObject); // Удалить объект из objectlistview 
+                _graph.DeletePipe((Pipe)e.RowObject);   // Удалить связь из графа
+                // Переобределяем коллекции 
+                _nodes = _graph.GetNodes();
+                _pipes = _graph.GetPipes();
+                glControl1_Paint(this, null);   // Перерисовывам glControl
+            }
         }
 
         private void glControl1_Resize(object sender, EventArgs e)
@@ -161,7 +225,7 @@ namespace FlowOptimization
                 // В матрице пересечений подсвечиваем записи о узлах с которыми он соединен
                 DataTableUtilities.SetBackLight(dataGridView1, _operatedNode, Color.Red);
             }
-            else if (_state == States.LineCreation)
+            else if (_state == States.PipeCreation)
                 DrawingUtilities.DrawLineByMouse(_operatedNode, _mouseX, _mouseY);
         
             // Нумеруем заголовочные столбцы
@@ -172,6 +236,7 @@ namespace FlowOptimization
             DataTableUtilities.SetRowNumber(dataGridView5);
             DataTableUtilities.SetRowNumber(dataGridView8);
             DataTableUtilities.SetRowNumber(dataGridView9);
+            DataTableUtilities.SetRowNumber(dataGridView10);
 
             // Привязыаем список узлов и связей к objectListView
             objectListView2.SetObjects(_pipes);
@@ -179,7 +244,7 @@ namespace FlowOptimization
             // Обновляем значения 
             objectListView1.Refresh();
             objectListView2.Refresh();
-            
+
             GL.Flush();
             GL.Finish();
             glControl1.SwapBuffers();          
@@ -209,7 +274,7 @@ namespace FlowOptimization
                 _operatedNode.Y = _mouseY;
             }
             else if (_state == States.ShowDialog && _oldMouseX != _mouseX && _oldMouseY != _mouseY)
-                _state = States.LineCreation;
+                _state = States.PipeCreation;
 
             if(_loaded)
                 glControl1_Paint(this, null);
@@ -241,7 +306,7 @@ namespace FlowOptimization
                     }
                     else if (e.Button == MouseButtons.Middle)
                     {
-                        _state = States.LineCreation;
+                        _state = States.PipeCreation;
                         _operatedNode = node;
                     }
                 }                     
@@ -255,7 +320,7 @@ namespace FlowOptimization
                 _state = States.Selected;
                 glControl1_Paint(this, null);
             }
-            else if (_state == States.LineCreation)
+            else if (_state == States.PipeCreation)
             {
                 foreach (var node in _nodes)
                 {
@@ -478,7 +543,6 @@ namespace FlowOptimization
             dataGridView9.DataSource = _dataTableView.IcvTtrMatrix;
             dataGridView10.DataSource = _dataTableView.PassabilityMatrix;
            
-
             comboBox1.Enabled = true;
         }
 
@@ -557,6 +621,7 @@ namespace FlowOptimization
                 // Матрица пересечений
                 case 0:
                     dataGridView7.DataSource = _intersectionMatrix.GetTable();
+                    DataTableUtilities.SetBackLight(dataGridView7, Color.Gold);
                     break;
                 // Список поставщиков
                 case 1:
@@ -566,6 +631,7 @@ namespace FlowOptimization
                 // Матрица расстояний
                 case 2:
                     DataGridContent.BuildContent(dataGridView7, _dataTableView.DistanceMatrix);
+                    DataTableUtilities.SetBackLight(dataGridView7, Color.Gold);
                     break;
                 // Матрица  маршрутов
                 case 3:
@@ -575,22 +641,30 @@ namespace FlowOptimization
                 // Матрица распределения
                 case 4:
                     dataGridView7.DataSource = _dataTableView.DistributionMatrix;
+                    DataTableUtilities.SetBackLight(dataGridView7, _nodes, Color.DodgerBlue);
+                    DataTableUtilities.SetBackLight(dataGridView7, Color.Gold);
                     break;
                 // Матрица ТТР
                 case 5:
                     dataGridView7.DataSource = _dataTableView.TtrMatrix;
+                    DataTableUtilities.SetBackLight(dataGridView7, _nodes, Color.DodgerBlue);
+                    DataTableUtilities.SetBackLight(dataGridView7, Color.Gold);
                     break;
                 // Матрица распределения с НП
                 case 6:
                     dataGridView7.DataSource = _dataTableView.IcvDistributionMatrix;
+                    DataTableUtilities.SetBackLight(dataGridView7, _nodes, Color.DodgerBlue);
+                    DataTableUtilities.SetBackLight(dataGridView7, Color.Gold);
                     break;
                 // Матрица ТТР с НП
                 case 7:
                     dataGridView7.DataSource = _dataTableView.IcvTtrMatrix;
+                    DataTableUtilities.SetBackLight(dataGridView7, _nodes, Color.DodgerBlue);
+                    DataTableUtilities.SetBackLight(dataGridView7, Color.Gold);
                     break;
                 // Матрица проходимости
                 case 8:
-                    dataGridView7.DataSource = null;
+                    dataGridView7.DataSource = _dataTableView.PassabilityMatrix;
                     break;
             }
 

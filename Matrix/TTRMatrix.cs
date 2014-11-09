@@ -34,7 +34,7 @@ namespace FlowOptimization.Matrix
         {
             if (icvsMatrix.Count != 0 && distributionMatrix != null)
             {
-                var table = GetTable(distributionMatrix.Ttr);
+                var table = GetTable(distributionMatrix.IcvTtr);
 
                 return table;
             }

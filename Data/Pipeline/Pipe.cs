@@ -48,8 +48,8 @@ namespace FlowOptimization.Data.Pipeline
             StartNode.ConnectedNodes.Add(endNode); 
             EndNode.ConnectedNodes.Add(startNode);
             // Добавляем информацию о связи между ними
-            StartNode.AddConnectedPipe(this); 
-            EndNode.AddConnectedPipe(this); 
+            StartNode.AddPipe(this); 
+            EndNode.AddPipe(this); 
             //_length = StartNode.ID;
         }
     }

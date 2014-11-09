@@ -15,8 +15,8 @@ namespace FlowOptimization.Matrix
         public int[][] IcvTtr;  // ТТР по итерация с учетом независимых поставщиков
         private readonly int[][] _distributionMatrix;
         private readonly int[][] _icvDistributionMatrix;
-        private RoutesMatrix _routesMatrix;
-        public PassabilityMatrix PassabilityMatrix;
+        private RoutesMatrix _routesMatrix; // Матрица маршрутов
+        public PassabilityMatrix PassabilityMatrix; // Матрица проходимости
 
         public DistributionMatrix(List<Node> nodes)
             : base(nodes)

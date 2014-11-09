@@ -6,7 +6,7 @@ using FlowOptimization.Math;
 namespace FlowOptimization.Matrix
 {
     /// <summary>
-    /// 
+    /// Полное описание пути от начальной точки до точки распределения
     /// </summary>
     class PathsMatrix : Matrix
     {

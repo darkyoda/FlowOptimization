@@ -86,6 +86,11 @@ namespace FlowOptimization.Data.Pipeline
         /// <param name="pipe">Связь для удаления</param>
         public void DeletePipe(Pipe pipe)
         {
+            foreach (var node in _nodes)
+            {
+                if (node.ConnectedPipes.Contains(pipe))
+                    node.RemovePipe(pipe);              
+            }
             _pipes.Remove(pipe);
             
             // Уменьшаем ID каждой связи на 1
@@ -104,8 +109,8 @@ namespace FlowOptimization.Data.Pipeline
             var pipe = new Pipe(startNode, endNode);
             _pipeCounter++;
             pipe.ID = _pipeCounter;
-            //startNode.AddConnectedPipe(pipe);
-           // endNode.AddConnectedPipe(pipe);
+            //startNode.AddPipe(pipe);
+           // endNode.AddPipe(pipe);
             _pipes.Add(pipe);   
         }
 
@@ -116,8 +121,8 @@ namespace FlowOptimization.Data.Pipeline
         public void AddPipe(Pipe pipe)
         {
             _pipeCounter = pipe.ID;
-            //startNode.AddConnectedPipe(pipe);
-            //endNode.AddConnectedPipe(pipe);
+            //startNode.AddPipe(pipe);
+            //endNode.AddPipe(pipe);
             _pipes.Add(pipe);   
             
         }
