@@ -44,20 +44,20 @@ namespace FlowOptimization.Utilities.IO
                     while (!csvReader.EndOfData)
                     {
                         string[] fieldData = csvReader.ReadFields();
-                        if (fieldData[0] == "X")
-                        {
+                        if (fieldData[0] == "====Nodes====")
                             nodeImport = true;
-                        }
-                        else if (fieldData[0] == "Length")
+                        else if (fieldData[0] == "====Pipes====")
                         {
                             nodeImport = false;
                             pipeImport = true;
                         }
-                        else if (fieldData[0] == "ID")
+                        else if (fieldData[0] == "====ICVs====")
                         {
                             pipeImport = false;
                             icvImport = true;
                         }
+                        else if (fieldData[0] == "X" || fieldData[0] == "Length" || fieldData[0] == "ID")
+                            continue;
                         else if (nodeImport)
                         {
                             var node = new Node {X = Convert.ToInt32(fieldData[0]), Y = Convert.ToInt32(fieldData[1])};

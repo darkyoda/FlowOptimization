@@ -1,8 +1,10 @@
+====Nodes====
 X,Y,NodeType,Name,Volume,TTR,ID
 777,193,Enter,,50,0,1
 650,180,Default,,0,0,2
 523,178,Default,,30,0,3
 407,182,Exit,,20,0,4
+====Pipes====
 Length,Name,StartNodeID,EndNodeID,ID
 20,,1,2,1
 30,,2,3,2

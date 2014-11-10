@@ -40,6 +40,7 @@ namespace FlowOptimization.Utilities.IO
 
             if (includeHeaderLine)
             {
+                sb.AppendLine("====Nodes====");
                 //Добавить header
                 foreach (PropertyInfo propertyInfo in propertyInfos)
                 {
@@ -59,7 +60,8 @@ namespace FlowOptimization.Utilities.IO
             }
 
             if (includeHeaderLine)
-             {
+            {
+                sb.AppendLine("====Pipes====");
                  //Добавить header
                  foreach (PropertyInfo propertyInfo in propertyInfos2)
                  {
@@ -75,9 +77,9 @@ namespace FlowOptimization.Utilities.IO
                 }
                 sb.Remove(sb.Length - 1, 1).AppendLine();
             }
-
             if (includeHeaderLine)
             {
+                sb.AppendLine("====ICVs====");
                 //Добавить header
                 foreach (PropertyInfo propertyInfo in propertyInfos3)
                 {

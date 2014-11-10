@@ -636,7 +636,7 @@ namespace FlowOptimization
                 // Матрица  маршрутов
                 case 3:
                     dataGridView7.DataSource = _dataTableView.RoutesMatrix;
-                    dataGridView7.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;                    
+                    dataGridView7.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;                    
                     break;
                 // Матрица распределения
                 case 4:

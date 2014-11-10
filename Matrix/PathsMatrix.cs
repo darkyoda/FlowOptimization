@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FlowOptimization.Data.Pipeline;
 using FlowOptimization.Math;
 
@@ -105,7 +104,7 @@ namespace FlowOptimization.Matrix
         {
             var path = new int[Nodes.Count];
             path[0] = startNode;
-            int counter = 1;
+            int nodesCounter = 1;
             int temp = endNode - 1;
 
             while (true)
@@ -113,15 +112,15 @@ namespace FlowOptimization.Matrix
                 temp = _encodedMatrix[startNode - 1][temp];
                 if (temp != startNode - 1)
                 {
-                    path[counter] = temp + 1;
-                    counter++;
+                    path[nodesCounter] = temp + 1;
+                    nodesCounter++;
                 }
                 else                
                     break;                                    
             }
 
-            SortPath(path, counter);
-            path[counter] = endNode;
+            SortPath(path, nodesCounter);
+            path[nodesCounter] = endNode;
 
             return path;
         }
@@ -129,8 +128,8 @@ namespace FlowOptimization.Matrix
         /// <summary>
         /// Отсортировать вектор пути
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="counter"></param>
+        /// <param name="path">Вектор пути</param>
+        /// <param name="counter">Количество узлов в пути</param>
         private static void SortPath(int[] path, int counter)
         {
             if (counter < 2) return;

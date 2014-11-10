@@ -1,3 +1,4 @@
+====Nodes====
 X,Y,NodeType,Name,Volume,TTR,ID
 973,244,Enter,,60,0,1
 986,166,Enter,,40,0,2
@@ -15,6 +16,7 @@ X,Y,NodeType,Name,Volume,TTR,ID
 175,80,Exit,,35,0,14
 424,179,Default,,0,0,15
 417,74,Default,,0,0,16
+====Pipes====
 Length,Name,StartNodeID,EndNodeID,ID
 20,,1,4,1
 9,,2,5,2
@@ -32,6 +34,7 @@ Length,Name,StartNodeID,EndNodeID,ID
 77,,16,14,14
 1,,15,16,15
 100,,12,13,16
+====ICVs====
 ID,Name,Node,Volume
 1,,1,45
 1,,2,15

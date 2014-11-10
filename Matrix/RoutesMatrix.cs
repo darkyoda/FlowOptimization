@@ -21,7 +21,7 @@ namespace FlowOptimization.Matrix
             table.Columns.Add("Конечный узел", typeof(int));
             table.Columns.Add("Длина", typeof(int));
             table.Columns.Add("Посещен", typeof(int));
-            table.Columns.Add("Маршрут", typeof(string));
+            table.Columns.Add("Путь", typeof(string));
         }
 
         public PathsMatrix GetPathsMatrix()
@@ -29,15 +29,6 @@ namespace FlowOptimization.Matrix
             return _pathsMatrix;
         }
 
-        /// <summary>
-        /// Получение матрицы маршрутов M x N с их длинами, где
-        /// M - количество возможных маршрутов
-        /// N1 - Начальный узел маршрута
-        /// N2 - Конечный узел маршрута
-        /// N3 - Длина маршрута
-        /// N4 - Был ли заполнен узел ("-1" - не заполнен "1" - заполнен (только для Default узлов с Volume != 0))
-        /// </summary>
-        /// <returns>Все возможные маршруты с их длинами</returns>
         public DataTable GetTable(DistanceMatrix distanceMatrix)
         {
             _distanceMatrix = distanceMatrix;
@@ -47,6 +38,17 @@ namespace FlowOptimization.Matrix
             // Удаляем столбец "Посещен"
             table.Columns.RemoveAt(3);
 
+            AddPaths(table);
+
+            return table;
+        }
+
+        /// <summary>
+        /// Добавить пути в матрицу маршрутов
+        /// </summary>
+        /// <param name="table"></param>
+        private void AddPaths(DataTable table)
+        {
             _pathsMatrix = new PathsMatrix(Nodes, _distanceMatrix.IntersectionMatrix, GetMatrix());
 
             for (int i = 0; i < GetMatrix().Length; i++)
@@ -60,8 +62,6 @@ namespace FlowOptimization.Matrix
 
                 table.Rows[i][3] = t.Remove(t.Length - 1);
             }
-
-            return table;
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace FlowOptimization.Matrix
         /// <summary>
         /// Отсортировать матрицу маршрутов
         /// </summary>
-        /// <param name="matrix"></param>
+        /// <param name="matrix">Матрица маршрутов</param>
         private void SortMatrix(int[][] matrix)
         {
             // Временные переменные для сортировки

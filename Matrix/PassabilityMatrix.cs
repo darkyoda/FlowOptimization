@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
+﻿using System.Data;
 
 namespace FlowOptimization.Matrix
 {
@@ -21,11 +17,11 @@ namespace FlowOptimization.Matrix
         }
 
         /// <summary>
-        /// Добавить распределение по всем точкам между точкой входа и точкой распределения
+        /// Добавить распределение по всем узлам между входным выходным узлами
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <param name="value"></param>
+        /// <param name="start">Входной узел</param>
+        /// <param name="end">Выходной узел</param>
+        /// <param name="value">Проходимый объем</param>
         public void AddValue(int start, int end, int value)
         {
             int[] path = _pathsMatrix.GetPath(start, end);
