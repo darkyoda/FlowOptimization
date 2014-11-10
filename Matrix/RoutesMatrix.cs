@@ -5,6 +5,9 @@ using FlowOptimization.Data.Pipeline;
 
 namespace FlowOptimization.Matrix
 {
+    /// <summary>
+    /// Матрица маршрутов
+    /// </summary>
     class RoutesMatrix : Matrix
     {
         private readonly int[][] _routesMatrix;

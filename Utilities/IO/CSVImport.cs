@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using FlowOptimization.Data;
 using FlowOptimization.Data.Pipeline;
 using Microsoft.VisualBasic.FileIO;
@@ -40,7 +41,7 @@ namespace FlowOptimization.Utilities.IO
                     int icvID = 1;
                     string icvName = "";
                     var icvNodes = new List<IcvNode>();
- 
+
                     while (!csvReader.EndOfData)
                     {
                         string[] fieldData = csvReader.ReadFields();
@@ -97,16 +98,20 @@ namespace FlowOptimization.Utilities.IO
                             icvNodes.Add(new IcvNode(nodeID, nodeVolume));
                             icvName = fieldData[1];
                         }
+
+                        // Файл некорректного формата
+                        if (nodeImport == false && pipeImport == false && icvImport == false)
+                            throw new Exception("Вы пытаетесь открыть некорректный формат файла!");
                     }
                     // Добавляем последнего независимого поставщика
                     if (icvs.Count > 1)
                         icvs.Add(new ICV(icvID, icvName, icvNodes));
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageBox.Show(e.Message);
             }
-            //return objects;
         }
     }
 }

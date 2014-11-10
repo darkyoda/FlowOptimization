@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -117,11 +116,11 @@ namespace FlowOptimization
             
             _state = States.Idle;
             _backgroundPath = null;
-
+            
             // Удаление связей через objectlistview
             objectListView2.CellEditActivation = ObjectListView.CellEditActivateMode.SingleClick;
             objectListView2.CellEditStarting += ObjectListView2OnCellEditStarting;
-
+            
             deleteColumn.IsEditable = true;
             deleteColumn.AspectGetter = delegate
             {
@@ -135,6 +134,11 @@ namespace FlowOptimization
             {
                 return SystemIcons.Application;
             };*/
+
+            // Изменение значений в клетке objectlistview
+            objectListView1.CellEditValidating += ObjectListViewOnCellValidating;
+            objectListView2.CellEditValidating += ObjectListViewOnCellValidating;
+
         }
 
         /// <summary>
@@ -154,6 +158,25 @@ namespace FlowOptimization
                 _pipes = _graph.GetPipes();
                 glControl1_Paint(this, null);   // Перерисовывам glControl
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ObjectListViewOnCellValidating(object sender, CellEditEventArgs e)
+        {
+            if (sender == objectListView1)
+            {
+                var node = (Node)e.RowObject;
+                object newValue = e.NewValue;
+                if ((int)newValue > 0)
+                    _graph.GetNodes()[node.ID - 1].NodeType = Node.NodesType.Exit;
+                else if ((int)newValue == 0)
+                    _graph.GetNodes()[node.ID - 1].NodeType = Node.NodesType.Default;
+            }
+            glControl1.Invalidate();
         }
 
         private void glControl1_Resize(object sender, EventArgs e)
@@ -262,7 +285,7 @@ namespace FlowOptimization
             GL.Ortho(0, w, 0, h, -1, 1);
         }
 
-        private void glControl1_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void glControl1_MouseMove(object sender, MouseEventArgs e)
         {
             _mouseX = e.X;
             _mouseY = glControl1.Height - e.Y;
@@ -280,7 +303,7 @@ namespace FlowOptimization
                 glControl1_Paint(this, null);
         }
 
-        private void glControl1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void glControl1_MouseDown(object sender, MouseEventArgs e)
         { 
             _state = States.Idle;
 
@@ -313,7 +336,7 @@ namespace FlowOptimization
             }
         }
 
-        private void glControl1_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void glControl1_MouseUp(object sender, MouseEventArgs e)
         {
             if (_state == States.Draggable)
             {
@@ -357,7 +380,7 @@ namespace FlowOptimization
             Refresh();
         }
 
-        private void glControl1_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void glControl1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             foreach (var node in _nodes)
             {
@@ -496,7 +519,7 @@ namespace FlowOptimization
                 import.Import(ref _graph, ref _icvs);
                 _nodes = _graph.GetNodes();
                 _pipes = _graph.GetPipes();
-
+                
                 if (_icvs.Count != 0)
                 {
                     _icvsMatrix = new ICVsMatrix(_icvs);
@@ -570,6 +593,7 @@ namespace FlowOptimization
             _graph.ResetIDs();
             _nodes.Clear();
             _pipes.Clear();
+            _state = States.Idle;
         }
 
         private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)

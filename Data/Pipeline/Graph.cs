@@ -36,6 +36,7 @@ namespace FlowOptimization.Data.Pipeline
             var node = new Node(x, y);
             _nodeCounter++;
             node.ID = _nodeCounter;
+            node.NodeType = Node.NodesType.Default;
             _nodes.Add(node);
         }
 
